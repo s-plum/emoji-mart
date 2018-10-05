@@ -23,6 +23,15 @@ export default class Anchors extends React.PureComponent {
     onAnchorClick(categories[index], index)
   }
 
+  handleKeyUp() {
+    return (e) => {
+        var code = (e.keyCode ? e.keyCode : e.which)
+        if(code == 13) {
+          this.handleClick(e)
+        }
+    }
+  }
+
   render() {
     var { categories, color, i18n, icons } = this.props,
       { selected } = this.state
@@ -41,20 +50,21 @@ export default class Anchors extends React.PureComponent {
 
           return (
             <button
+              type="button"
               key={id}
               aria-label={i18n.categories[id]}
               title={i18n.categories[id]}
               data-index={i}
-              type={'button'}
               onClick={this.handleClick}
+              onKeyUp={this.handleKeyUp()}
               className={`emoji-mart-anchor ${
                 isSelected ? 'emoji-mart-anchor-selected' : ''
               }`}
               style={{ color: isSelected ? color : null }}
             >
-              <div className="emoji-mart-anchor-icon">
-                {icons.categories[iconId]()}
-              </div>
+              <span className="emoji-mart-anchor-icon">
+                {icons.categories[id]()}
+              </span>
               <span
                 className="emoji-mart-anchor-bar"
                 style={{ backgroundColor: color }}

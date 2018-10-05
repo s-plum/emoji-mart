@@ -15,7 +15,16 @@
 }
 
 .emoji-mart .emoji-mart-emoji {
+  -webkit-appearance: none;
+  apppearance: none;
+  background: none;
+  border: 0;
+  margin: 0;
   padding: 6px;
+}
+
+.emoji-mart .emoji-mart-emoji:focus {
+  outline: none;
 }
 
 .emoji-mart-bar {
@@ -41,11 +50,16 @@
 }
 
 .emoji-mart-anchor {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: 0;
   position: relative;
   display: block;
   flex: 1 1 auto;
   color: #858585;
   text-align: center;
+  margin: 0;
   padding: 12px 4px;
   overflow: hidden;
   transition: color .1s ease-out;
@@ -58,7 +72,8 @@
 .emoji-mart-anchor:hover,
 .emoji-mart-anchor:focus,
 .emoji-mart-anchor-selected {
-  color: #464646;
+  color: rgba(174, 101, 197, 0.77);
+  outline: none;
 }
 
 .emoji-mart-anchor-selected .emoji-mart-anchor-bar {
@@ -126,6 +141,10 @@
   padding: 2px 5px 1px;
   border: none;
   background: none;
+}
+
+.emoji-mart-category:focus {
+  outline: none;
 }
 
 .emoji-mart-category .emoji-mart-emoji span {
@@ -229,7 +248,7 @@
 }
 
 .emoji-mart-preview-data {
-  left: 68px; right: 12px;
+  left: 68px; right: 68px;
   word-break: break-all;
 }
 
@@ -457,4 +476,24 @@
 .emoji-mart-dark .emoji-mart-anchor:focus,
 .emoji-mart-dark .emoji-mart-anchor-selected {
   color: #bfbfbf;
+}
+
+.emoji-mart-offscreen {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: 0;
+  display: block;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  text-align: left;
+  text-indent: -9999em;
+  width: 0;
+}
+
+.emoji-mart-offscreen:focus {
+  outline: none;
 }

@@ -74,6 +74,7 @@ export default class Category extends React.Component {
     var { top, height } = this.container.getBoundingClientRect()
     var { top: parentTop } = parent.getBoundingClientRect()
     var { height: labelHeight } = this.label.getBoundingClientRect()
+    var scrollTop = this.parent ? this.parent.scrollTop : 0
 
     this.top = top - parentTop + parent.scrollTop
 
@@ -185,6 +186,8 @@ export default class Category extends React.Component {
     return (
       <section
         ref={this.setContainerRef}
+        tabIndex={0}
+        title={name}
         className="emoji-mart-category"
         aria-label={label}
         style={containerStyles}

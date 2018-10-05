@@ -21,6 +21,7 @@ const I18N = {
   clear: 'Clear', // Accessible label on "clear" button
   notfound: 'No Emoji Found',
   skintext: 'Choose your default skin tone',
+  skipnav: 'Skip Emoji Keyboard Content',
   categories: {
     search: 'Search Results',
     recent: 'Frequently Used',
@@ -196,6 +197,10 @@ export default class NimblePicker extends React.PureComponent {
     this.setPreviewRef = this.setPreviewRef.bind(this)
     this.handleSkinChange = this.handleSkinChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.setEndRef = this.setEndRef.bind(this)
+    this.setSkipNavRef = this.setSkipNavRef.bind(this)
+    this.handleSkipContent = this.handleSkipContent.bind(this)
+    this.handleSkipKeyDown = this.handleSkipKeyDown.bind(this)
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -390,10 +395,29 @@ export default class NimblePicker extends React.PureComponent {
     this.handleScroll()
   }
 
+  handleSkipContent() {
+    if (this.end) {
+      this.end.focus()
+    }
+  }
+
+  handleSkipKeyDown(e) {
+      var code = (e.keyCode ? e.keyCode : e.which)
+      if(code == 13) {
+          e.preventDefault()
+          e.stopPropagation()
+          this.handleSkipContent()
+      }
+  }
+
   handleAnchorClick(category, i) {
     var component = this.categoryRefs[`category-${i}`],
       { scroll, anchors } = this,
       scrollToComponent = null
+
+      if (component.container) {
+        component.container.focus();
+      }
 
     scrollToComponent = () => {
       if (component) {
@@ -433,6 +457,15 @@ export default class NimblePicker extends React.PureComponent {
     let handled = false
 
     switch (e.keyCode) {
+      case 27:
+        if (this.props.onEscape) {
+          this.props.onEscape()
+        } else if (this.skipNav) {
+          this.skipNav.focus()
+        }
+
+        handled = true
+        break
       case 13:
         let emoji
 
@@ -493,6 +526,14 @@ export default class NimblePicker extends React.PureComponent {
     this.scroll = c
   }
 
+  setEndRef(c) {
+    this.end = c
+  }
+
+  setSkipNavRef(c) {
+    this.skipNav = c
+  }
+
   setCategoryRef(name, c) {
     if (!this.categoryRefs) {
       this.categoryRefs = {}
@@ -538,6 +579,12 @@ export default class NimblePicker extends React.PureComponent {
         aria-label={title}
         onKeyDown={this.handleKeyDown}
       >
+        <button className="emoji-mart-offscreen"
+            type="button"
+            ref={this.setSkipNavRef}
+            onClick={this.handleSkipContent}
+            onKeyDown={this.handleSkipKeyDown}
+        >{this.i18n.skipnav}</button>
         <div className="emoji-mart-bar">
           <Anchors
             ref={this.setAnchorsRef}
@@ -566,6 +613,7 @@ export default class NimblePicker extends React.PureComponent {
           ref={this.setScrollRef}
           className="emoji-mart-scroll"
           onScroll={this.handleScroll}
+          onKeyUp={this.handleKeyUp}
         >
           {this.getCategories().map((category, i) => {
             return (
@@ -638,6 +686,9 @@ export default class NimblePicker extends React.PureComponent {
             />
           </div>
         )}
+        <div className="emoji-mart-offscreen emoji-mart-end"
+             tabIndex={0}
+             ref={this.setEndRef}/>
       </section>
     )
   }
