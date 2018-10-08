@@ -71,7 +71,8 @@
 .emoji-mart-anchor:focus { outline: 0 }
 .emoji-mart-anchor:hover,
 .emoji-mart-anchor:focus,
-.emoji-mart-anchor-selected {
+.emoji-mart-anchor-selected:hover,
+.emoji-mart-anchor-selected:focus {
   color: rgba(174, 101, 197, 0.77);
   outline: none;
 }
@@ -154,7 +155,8 @@
   cursor: default;
 }
 
-.emoji-mart-category .emoji-mart-emoji:hover:before {
+.emoji-mart-category .emoji-mart-emoji:hover:before,
+.emoji-mart-category .emoji-mart-emoji:focus:before {
   z-index: 0;
   content: "";
   position: absolute;
