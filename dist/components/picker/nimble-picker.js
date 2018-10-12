@@ -111,6 +111,8 @@ var NimblePicker = function (_React$PureComponent) {
       firstRender: true
     };
 
+    _this.idHash = '_' + Math.random().toString(36).substr(2, 9);
+
     _this.categories = [];
     var allCategories = [].concat(_this.data.categories);
 
@@ -199,9 +201,6 @@ var NimblePicker = function (_React$PureComponent) {
     _this.setPreviewRef = _this.setPreviewRef.bind(_this);
     _this.handleSkinChange = _this.handleSkinChange.bind(_this);
     _this.handleKeyDown = _this.handleKeyDown.bind(_this);
-    _this.setEndRef = _this.setEndRef.bind(_this);
-    _this.setSkipNavRef = _this.setSkipNavRef.bind(_this);
-    _this.handleSkipContent = _this.handleSkipContent.bind(_this);
     _this.handleSkipKeyDown = _this.handleSkipKeyDown.bind(_this);
     return _this;
   }
@@ -410,20 +409,11 @@ var NimblePicker = function (_React$PureComponent) {
       this.handleScroll();
     }
   }, {
-    key: 'handleSkipContent',
-    value: function handleSkipContent() {
-      if (this.end) {
-        this.end.focus();
-      }
-    }
-  }, {
     key: 'handleSkipKeyDown',
     value: function handleSkipKeyDown(e) {
       var code = e.keyCode ? e.keyCode : e.which;
       if (code == 13) {
-        e.preventDefault();
         e.stopPropagation();
-        this.handleSkipContent();
       }
     }
   }, {
@@ -544,16 +534,6 @@ var NimblePicker = function (_React$PureComponent) {
       this.scroll = c;
     }
   }, {
-    key: 'setEndRef',
-    value: function setEndRef(c) {
-      this.end = c;
-    }
-  }, {
-    key: 'setSkipNavRef',
-    value: function setSkipNavRef(c) {
-      this.skipNav = c;
-    }
-  }, {
     key: 'setCategoryRef',
     value: function setCategoryRef(name, c) {
       if (!this.categoryRefs) {
@@ -595,18 +575,17 @@ var NimblePicker = function (_React$PureComponent) {
       var width = perLine * (emojiSize + 12) + 12 + 2 + (0, _utils.measureScrollbar)();
 
       return _react2.default.createElement(
-        'div',
+        'a',
         {
           style: (0, _extends3.default)({ width: width }, style),
           className: 'emoji-mart',
           onKeyDown: this.handleKeyDown
         },
         _react2.default.createElement(
-          'button',
+          'a',
           { className: 'emoji-mart-offscreen',
-            type: 'button',
-            ref: this.setSkipNavRef,
-            onClick: this.handleSkipContent,
+            id: 'emoji-mart-start-' + this.idHash,
+            href: '#emoji-mart-end-' + this.idHash,
             onKeyDown: this.handleSkipKeyDown
           },
           this.i18n.skipnav
@@ -704,9 +683,10 @@ var NimblePicker = function (_React$PureComponent) {
             i18n: this.i18n
           })
         ),
-        _react2.default.createElement('div', { className: 'emoji-mart-offscreen emoji-mart-end',
-          tabIndex: 0,
-          ref: this.setEndRef })
+        _react2.default.createElement('a', { className: 'emoji-mart-offscreen',
+          id: 'emoji-mart-end-' + this.idHash,
+          href: '#emoji-mart-start-' + this.idHash,
+          onKeyDown: this.handleSkipKeyDown })
       );
     }
   }]);

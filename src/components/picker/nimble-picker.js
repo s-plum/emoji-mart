@@ -72,6 +72,8 @@ export default class NimblePicker extends React.PureComponent {
       firstRender: true,
     }
 
+    this.idHash = `_${Math.random().toString(36).substr(2, 9)}`
+
     this.categories = []
     let allCategories = [].concat(this.data.categories)
 
@@ -197,9 +199,6 @@ export default class NimblePicker extends React.PureComponent {
     this.setPreviewRef = this.setPreviewRef.bind(this)
     this.handleSkinChange = this.handleSkinChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.setEndRef = this.setEndRef.bind(this)
-    this.setSkipNavRef = this.setSkipNavRef.bind(this)
-    this.handleSkipContent = this.handleSkipContent.bind(this)
     this.handleSkipKeyDown = this.handleSkipKeyDown.bind(this)
   }
 
@@ -395,18 +394,10 @@ export default class NimblePicker extends React.PureComponent {
     this.handleScroll()
   }
 
-  handleSkipContent() {
-    if (this.end) {
-      this.end.focus()
-    }
-  }
-
   handleSkipKeyDown(e) {
       var code = (e.keyCode ? e.keyCode : e.which)
       if(code == 13) {
-          e.preventDefault()
           e.stopPropagation()
-          this.handleSkipContent()
       }
   }
 
@@ -526,14 +517,6 @@ export default class NimblePicker extends React.PureComponent {
     this.scroll = c
   }
 
-  setEndRef(c) {
-    this.end = c
-  }
-
-  setSkipNavRef(c) {
-    this.skipNav = c
-  }
-
   setCategoryRef(name, c) {
     if (!this.categoryRefs) {
       this.categoryRefs = {}
@@ -579,12 +562,11 @@ export default class NimblePicker extends React.PureComponent {
         aria-label={title}
         onKeyDown={this.handleKeyDown}
       >
-        <button className="emoji-mart-offscreen"
-            type="button"
-            ref={this.setSkipNavRef}
-            onClick={this.handleSkipContent}
+        <a className="emoji-mart-offscreen"
+            id={`emoji-mart-start-${this.idHash}`}
+            href={`#emoji-mart-end-${this.idHash}`}
             onKeyDown={this.handleSkipKeyDown}
-        >{this.i18n.skipnav}</button>
+        >{this.i18n.skipnav}</a>
         <div className="emoji-mart-bar">
           <Anchors
             ref={this.setAnchorsRef}
@@ -686,9 +668,11 @@ export default class NimblePicker extends React.PureComponent {
             />
           </div>
         )}
-        <div className="emoji-mart-offscreen emoji-mart-end"
-             tabIndex={0}
-             ref={this.setEndRef}/>
+
+        <a className="emoji-mart-offscreen"
+           id={`emoji-mart-end-${this.idHash}`}
+           href={`#emoji-mart-start-${this.idHash}`}
+           onKeyDown={this.handleSkipKeyDown}/>
       </section>
     )
   }
