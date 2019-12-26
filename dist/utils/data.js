@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 const mapping = {
   name: 'a',
   unified: 'b',
@@ -103,4 +108,6 @@ const uncompress = data => {
   }
 };
 
-export { buildSearch, compress, uncompress };
+exports.buildSearch = buildSearch;
+exports.compress = compress;
+exports.uncompress = uncompress;

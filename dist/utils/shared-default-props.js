@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 const EmojiDefaultProps = {
   skin: 1,
   set: 'apple',
@@ -40,4 +45,5 @@ const PickerDefaultProps = {
   icons: {}
 };
 
-export { PickerDefaultProps, EmojiDefaultProps };
+exports.PickerDefaultProps = PickerDefaultProps;
+exports.EmojiDefaultProps = EmojiDefaultProps;

@@ -1,22 +1,66 @@
-import _Object$values from 'babel-runtime/core-js/object/values';
-import _extends from '../../polyfills/extends';
-import '../../vendor/raf-polyfill';
+'use strict';
 
-import React from 'react';
-import PropTypes from 'prop-types';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-import * as icons from '../../svgs';
-import store from '../../utils/store';
-import frequently from '../../utils/frequently';
-import { deepMerge, measureScrollbar, getSanitizedData } from '../../utils';
-import { uncompress } from '../../utils/data';
-import { PickerPropTypes } from '../../utils/shared-props';
+var _values = require('babel-runtime/core-js/object/values');
 
-import Anchors from '../anchors';
-import Category from '../category';
-import Preview from '../preview';
-import Search from '../search';
-import { PickerDefaultProps } from '../../utils/shared-default-props';
+var _values2 = _interopRequireDefault(_values);
+
+var _extends2 = require('../../polyfills/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+require('../../vendor/raf-polyfill');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _svgs = require('../../svgs');
+
+var icons = _interopRequireWildcard(_svgs);
+
+var _store = require('../../utils/store');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _frequently = require('../../utils/frequently');
+
+var _frequently2 = _interopRequireDefault(_frequently);
+
+var _utils = require('../../utils');
+
+var _data = require('../../utils/data');
+
+var _sharedProps = require('../../utils/shared-props');
+
+var _anchors = require('../anchors');
+
+var _anchors2 = _interopRequireDefault(_anchors);
+
+var _category = require('../category');
+
+var _category2 = _interopRequireDefault(_category);
+
+var _preview = require('../preview');
+
+var _preview2 = _interopRequireDefault(_preview);
+
+var _search = require('../search');
+
+var _search2 = _interopRequireDefault(_search);
+
+var _sharedDefaultProps = require('../../utils/shared-default-props');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const I18N = {
   search: 'Search',
@@ -48,7 +92,7 @@ const I18N = {
   }
 };
 
-export default class NimblePicker extends React.PureComponent {
+class NimblePicker extends _react2.default.PureComponent {
   constructor(props) {
     super(props);
 
@@ -63,14 +107,14 @@ export default class NimblePicker extends React.PureComponent {
     };
 
     if (props.data.compressed) {
-      uncompress(props.data);
+      (0, _data.uncompress)(props.data);
     }
 
     this.data = props.data;
-    this.i18n = deepMerge(I18N, props.i18n);
-    this.icons = deepMerge(icons, props.icons);
+    this.i18n = (0, _utils.deepMerge)(I18N, props.i18n);
+    this.icons = (0, _utils.deepMerge)(icons, props.icons);
     this.state = {
-      skin: props.skin || store.get('skin') || props.defaultSkin,
+      skin: props.skin || _store2.default.get('skin') || props.defaultSkin,
       firstRender: true
     };
 
@@ -97,7 +141,7 @@ export default class NimblePicker extends React.PureComponent {
 
         const category = customCategories[emoji.customCategory];
 
-        const customEmoji = _extends({}, emoji, {
+        const customEmoji = (0, _extends3.default)({}, emoji, {
           // `<Category />` expects emoji to have an `id`.
           id: emoji.short_names[0],
           custom: true
@@ -107,7 +151,7 @@ export default class NimblePicker extends React.PureComponent {
         this.CUSTOM.push(customEmoji);
       });
 
-      allCategories.push(..._Object$values(customCategories));
+      allCategories.push(...(0, _values2.default)(customCategories));
     }
 
     this.hideRecent = true;
@@ -187,11 +231,11 @@ export default class NimblePicker extends React.PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     if (props.skin) {
-      return _extends({}, state, {
+      return (0, _extends3.default)({}, state, {
         skin: props.skin
       });
-    } else if (props.defaultSkin && !store.get('skin')) {
-      return _extends({}, state, {
+    } else if (props.defaultSkin && !_store2.default.get('skin')) {
+      return (0, _extends3.default)({}, state, {
         skin: props.defaultSkin
       });
     }
@@ -265,7 +309,7 @@ export default class NimblePicker extends React.PureComponent {
 
   handleEmojiSelect(emoji) {
     this.props.onSelect(emoji);
-    if (!this.hideRecent && !this.props.recent) frequently.add(emoji);
+    if (!this.hideRecent && !this.props.recent) _frequently2.default.add(emoji);
 
     var component = this.categoryRefs['category-1'];
     if (component) {
@@ -414,7 +458,7 @@ export default class NimblePicker extends React.PureComponent {
         { onSkinChange } = this.props;
 
     this.setState(newState);
-    store.update(newState);
+    _store2.default.update(newState);
 
     onSkinChange(skin);
   }
@@ -435,7 +479,7 @@ export default class NimblePicker extends React.PureComponent {
       case 13:
         let emoji;
 
-        if (this.SEARCH_CATEGORY.emojis && this.SEARCH_CATEGORY.emojis.length && (emoji = getSanitizedData(this.SEARCH_CATEGORY.emojis[0], this.state.skin, this.props.set, this.props.data))) {
+        if (this.SEARCH_CATEGORY.emojis && this.SEARCH_CATEGORY.emojis.length && (emoji = (0, _utils.getSanitizedData)(this.SEARCH_CATEGORY.emojis[0], this.state.skin, this.props.set, this.props.data))) {
           this.handleEmojiSelect(emoji);
           handled = true;
         }
@@ -517,17 +561,17 @@ export default class NimblePicker extends React.PureComponent {
       darkMode
     } = this.props,
         { skin } = this.state,
-        width = perLine * (emojiSize + 12) + 12 + 2 + measureScrollbar();
+        width = perLine * (emojiSize + 12) + 12 + 2 + (0, _utils.measureScrollbar)();
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       {
-        style: _extends({ width: width }, style),
+        style: (0, _extends3.default)({ width: width }, style),
         className: `emoji-mart ${darkMode ? 'emoji-mart-dark' : ''}`,
         'aria-label': title,
         onKeyDown: this.handleKeyDown
       },
-      React.createElement(
+      _react2.default.createElement(
         'a',
         { className: 'emoji-mart-offscreen',
           id: `emoji-mart-start-${this.idHash}`,
@@ -536,10 +580,10 @@ export default class NimblePicker extends React.PureComponent {
         },
         this.i18n.skipnav
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'emoji-mart-bar' },
-        React.createElement(Anchors, {
+        _react2.default.createElement(_anchors2.default, {
           ref: this.setAnchorsRef,
           data: this.data,
           i18n: this.i18n,
@@ -549,7 +593,7 @@ export default class NimblePicker extends React.PureComponent {
           icons: this.icons
         })
       ),
-      React.createElement(Search, {
+      _react2.default.createElement(_search2.default, {
         ref: this.setSearchRef,
         onSearch: this.handleSearch,
         data: this.data,
@@ -560,7 +604,7 @@ export default class NimblePicker extends React.PureComponent {
         custom: this.CUSTOM,
         autoFocus: autoFocus
       }),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         {
           ref: this.setScrollRef,
@@ -569,7 +613,7 @@ export default class NimblePicker extends React.PureComponent {
           onKeyUp: this.handleKeyUp
         },
         this.getCategories().map((category, i) => {
-          return React.createElement(Category, {
+          return _react2.default.createElement(_category2.default, {
             ref: this.setCategoryRef.bind(this, `category-${i}`),
             key: category.name,
             id: category.id,
@@ -602,10 +646,10 @@ export default class NimblePicker extends React.PureComponent {
           });
         })
       ),
-      (showPreview || showSkinTones) && React.createElement(
+      (showPreview || showSkinTones) && _react2.default.createElement(
         'div',
         { className: 'emoji-mart-bar' },
-        React.createElement(Preview, {
+        _react2.default.createElement(_preview2.default, {
           ref: this.setPreviewRef,
           data: this.data,
           title: title,
@@ -630,7 +674,7 @@ export default class NimblePicker extends React.PureComponent {
           i18n: this.i18n
         })
       ),
-      React.createElement('a', { className: 'emoji-mart-offscreen',
+      _react2.default.createElement('a', { className: 'emoji-mart-offscreen',
         id: `emoji-mart-end-${this.idHash}`,
         href: `#emoji-mart-start-${this.idHash}`,
         onKeyDown: this.handleSkipKeyDown })
@@ -638,7 +682,8 @@ export default class NimblePicker extends React.PureComponent {
   }
 }
 
-NimblePicker.propTypes /* remove-proptypes */ = _extends({}, PickerPropTypes, {
-  data: PropTypes.object.isRequired
+exports.default = NimblePicker;
+NimblePicker.propTypes /* remove-proptypes */ = (0, _extends3.default)({}, _sharedProps.PickerPropTypes, {
+  data: _propTypes2.default.object.isRequired
 });
-NimblePicker.defaultProps = _extends({}, PickerDefaultProps);
+NimblePicker.defaultProps = (0, _extends3.default)({}, _sharedDefaultProps.PickerDefaultProps);

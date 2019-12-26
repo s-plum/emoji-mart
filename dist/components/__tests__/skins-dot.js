@@ -1,9 +1,22 @@
-import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import SkinsDot from '../skins-dot';
+'use strict';
 
-configure({ adapter: new Adapter() });
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _enzymeAdapterReact = require('enzyme-adapter-react-16');
+
+var _enzymeAdapterReact2 = _interopRequireDefault(_enzymeAdapterReact);
+
+var _skinsDot = require('../skins-dot');
+
+var _skinsDot2 = _interopRequireDefault(_skinsDot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _enzyme.configure)({ adapter: new _enzymeAdapterReact2.default() });
 
 test('click dot to expand the menu', () => {
   let currentSkin;
@@ -21,7 +34,7 @@ test('click dot to expand the menu', () => {
     }
   };
 
-  const skins = shallow(React.createElement(SkinsDot, { skin: 1, onChange: onChange, i18n: i18n }));
+  const skins = (0, _enzyme.shallow)(_react2.default.createElement(_skinsDot2.default, { skin: 1, onChange: onChange, i18n: i18n }));
 
   // component should be un-expanded by default
   expect(skins.find('[aria-haspopup]').prop('aria-label')).toEqual('Default Skin Tone');

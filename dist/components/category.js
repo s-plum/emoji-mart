@@ -1,13 +1,38 @@
-import _extends from '../polyfills/extends';
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-import frequently from '../utils/frequently';
-import { getData } from '../utils';
-import NimbleEmoji from './emoji/nimble-emoji';
-import NotFound from './not-found';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-export default class Category extends React.Component {
+var _extends2 = require('../polyfills/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _frequently = require('../utils/frequently');
+
+var _frequently2 = _interopRequireDefault(_frequently);
+
+var _utils = require('../utils');
+
+var _nimbleEmoji = require('./emoji/nimble-emoji');
+
+var _nimbleEmoji2 = _interopRequireDefault(_nimbleEmoji);
+
+var _notFound = require('./not-found');
+
+var _notFound2 = _interopRequireDefault(_notFound);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Category extends _react2.default.Component {
   constructor(props) {
     super(props);
 
@@ -100,7 +125,7 @@ export default class Category extends React.Component {
 
     if (name == 'Recent') {
       let { custom } = this.props;
-      let frequentlyUsed = recent || frequently.get(perLine);
+      let frequentlyUsed = recent || _frequently2.default.get(perLine);
 
       if (frequentlyUsed.length) {
         emojis = frequentlyUsed.map(id => {
@@ -110,7 +135,7 @@ export default class Category extends React.Component {
           }
 
           return id;
-        }).filter(id => !!getData(id, null, null, this.data));
+        }).filter(id => !!(0, _utils.getData)(id, null, null, this.data));
       }
 
       if (emojis.length === 0 && frequentlyUsed.length > 0) {
@@ -176,7 +201,7 @@ export default class Category extends React.Component {
 
     const label = i18n.categories[id] || name;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       {
         ref: this.setContainerRef,
@@ -186,14 +211,14 @@ export default class Category extends React.Component {
         'aria-label': label,
         style: containerStyles
       },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         {
           style: labelStyles,
           'data-name': name,
           className: 'emoji-mart-category-label'
         },
-        React.createElement(
+        _react2.default.createElement(
           'span',
           {
             style: labelSpanStyles,
@@ -203,18 +228,18 @@ export default class Category extends React.Component {
           label
         )
       ),
-      React.createElement(
+      _react2.default.createElement(
         'ul',
         { className: 'emoji-mart-category-list' },
-        emojis && emojis.map(emoji => React.createElement(
+        emojis && emojis.map(emoji => _react2.default.createElement(
           'li',
           {
             key: emoji.short_names && emoji.short_names.join('_') || emoji
           },
-          NimbleEmoji(_extends({ emoji: emoji, data: this.data }, emojiProps))
+          (0, _nimbleEmoji2.default)((0, _extends3.default)({ emoji: emoji, data: this.data }, emojiProps))
         ))
       ),
-      emojis && !emojis.length && React.createElement(NotFound, {
+      emojis && !emojis.length && _react2.default.createElement(_notFound2.default, {
         i18n: i18n,
         notFound: notFound,
         notFoundEmoji: notFoundEmoji,
@@ -225,16 +250,17 @@ export default class Category extends React.Component {
   }
 }
 
+exports.default = Category;
 Category.propTypes /* remove-proptypes */ = {
-  emojis: PropTypes.array,
-  hasStickyPosition: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  native: PropTypes.bool.isRequired,
-  perLine: PropTypes.number.isRequired,
-  emojiProps: PropTypes.object.isRequired,
-  recent: PropTypes.arrayOf(PropTypes.string),
-  notFound: PropTypes.func,
-  notFoundEmoji: PropTypes.string.isRequired
+  emojis: _propTypes2.default.array,
+  hasStickyPosition: _propTypes2.default.bool,
+  name: _propTypes2.default.string.isRequired,
+  native: _propTypes2.default.bool.isRequired,
+  perLine: _propTypes2.default.number.isRequired,
+  emojiProps: _propTypes2.default.object.isRequired,
+  recent: _propTypes2.default.arrayOf(_propTypes2.default.string),
+  notFound: _propTypes2.default.func,
+  notFoundEmoji: _propTypes2.default.string.isRequired
 };
 
 Category.defaultProps = {

@@ -1,15 +1,34 @@
-import _extends from '../../polyfills/extends';
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-import { getData, getSanitizedData, unifiedToNative } from '../../utils';
-import { uncompress } from '../../utils/data';
-import { EmojiPropTypes } from '../../utils/shared-props';
-import { EmojiDefaultProps } from '../../utils/shared-default-props';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = require('../../polyfills/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _utils = require('../../utils');
+
+var _data = require('../../utils/data');
+
+var _sharedProps = require('../../utils/shared-props');
+
+var _sharedDefaultProps = require('../../utils/shared-default-props');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const _getData = props => {
   var { emoji, skin, set, data } = props;
-  return getData(emoji, skin, set, data);
+  return (0, _utils.getData)(emoji, skin, set, data);
 };
 
 const _getPosition = props => {
@@ -22,7 +41,7 @@ const _getPosition = props => {
 
 const _getSanitizedData = props => {
   var { emoji, skin, set, data } = props;
-  return getSanitizedData(emoji, skin, set, data);
+  return (0, _utils.getSanitizedData)(emoji, skin, set, data);
 };
 
 const _handleClick = (e, props) => {
@@ -84,7 +103,7 @@ const _convertStyleToCSS = style => {
 
 const NimbleEmoji = props => {
   if (props.data.compressed) {
-    uncompress(props.data);
+    (0, _data.uncompress)(props.data);
   }
 
   for (let k in NimbleEmoji.defaultProps) {
@@ -106,7 +125,7 @@ const NimbleEmoji = props => {
       style = {},
       children = props.children,
       className = 'emoji-mart-emoji',
-      nativeEmoji = unified && unifiedToNative(unified),
+      nativeEmoji = unified && (0, _utils.unifiedToNative)(unified),
 
   // combine the emoji itself and all shortcodes into an accessible label
   label = [nativeEmoji].concat(short_names).filter(Boolean).join(', '),
@@ -143,13 +162,13 @@ const NimbleEmoji = props => {
       display: 'inline-block'
     };
     if (data.spriteUrl) {
-      style = _extends({}, style, {
+      style = (0, _extends3.default)({}, style, {
         backgroundImage: `url(${data.spriteUrl})`,
         backgroundSize: `${100 * props.sheetColumns}% ${100 * props.sheetRows}%`,
         backgroundPosition: _getPosition(props)
       });
     } else {
-      style = _extends({}, style, {
+      style = (0, _extends3.default)({}, style, {
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -193,9 +212,9 @@ const NimbleEmoji = props => {
     style = _convertStyleToCSS(style);
     return `<${Tag.name} style='${style}' aria-label='${label}' ${title ? `title='${title}'` : ''} class='${className}'>${children || ''}</${Tag.name}>`;
   } else {
-    return React.createElement(
+    return _react2.default.createElement(
       Tag.name,
-      _extends({
+      (0, _extends3.default)({
         onClick: e => _handleClick(e, props),
         onKeyDown: e => _handleKeyDown(e, props),
         onMouseEnter: e => _handleOver(e, props),
@@ -204,7 +223,7 @@ const NimbleEmoji = props => {
         title: title,
         className: className
       }, Tag.props),
-      React.createElement(
+      _react2.default.createElement(
         'span',
         { style: style },
         children
@@ -213,9 +232,9 @@ const NimbleEmoji = props => {
   }
 };
 
-NimbleEmoji.propTypes /* remove-proptypes */ = _extends({}, EmojiPropTypes, {
-  data: PropTypes.object.isRequired
+NimbleEmoji.propTypes /* remove-proptypes */ = (0, _extends3.default)({}, _sharedProps.EmojiPropTypes, {
+  data: _propTypes2.default.object.isRequired
 });
-NimbleEmoji.defaultProps = EmojiDefaultProps;
+NimbleEmoji.defaultProps = _sharedDefaultProps.EmojiDefaultProps;
 
-export default NimbleEmoji;
+exports.default = NimbleEmoji;

@@ -1,17 +1,37 @@
-import _extends from '../../polyfills/extends';
-import React from 'react';
+'use strict';
 
-import data from '../../../data/all.json';
-import NimblePicker from './nimble-picker';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-import { PickerPropTypes } from '../../utils/shared-props';
-import { PickerDefaultProps } from '../../utils/shared-default-props';
+var _extends2 = require('../../polyfills/extends');
 
-export default class Picker extends React.PureComponent {
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _all = require('../../../data/all.json');
+
+var _all2 = _interopRequireDefault(_all);
+
+var _nimblePicker = require('./nimble-picker');
+
+var _nimblePicker2 = _interopRequireDefault(_nimblePicker);
+
+var _sharedProps = require('../../utils/shared-props');
+
+var _sharedDefaultProps = require('../../utils/shared-default-props');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Picker extends _react2.default.PureComponent {
   render() {
-    return React.createElement(NimblePicker, _extends({}, this.props, this.state));
+    return _react2.default.createElement(_nimblePicker2.default, (0, _extends3.default)({}, this.props, this.state));
   }
 }
 
-Picker.propTypes /* remove-proptypes */ = PickerPropTypes;
-Picker.defaultProps = _extends({}, PickerDefaultProps, { data });
+exports.default = Picker;
+Picker.propTypes /* remove-proptypes */ = _sharedProps.PickerPropTypes;
+Picker.defaultProps = (0, _extends3.default)({}, _sharedDefaultProps.PickerDefaultProps, { data: _all2.default });

@@ -1,4 +1,14 @@
-import store from './store';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _store = require('./store');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const DEFAULTS = ['+1', 'grinning', 'kissing_heart', 'heart_eyes', 'laughing', 'stuck_out_tongue_winking_eye', 'sweat_smile', 'joy', 'scream', 'disappointed', 'unamused', 'weary', 'sob', 'sunglasses', 'heart', 'poop'];
 
@@ -7,7 +17,7 @@ let defaults = {};
 
 function init() {
   initialized = true;
-  frequently = store.get('frequently');
+  frequently = _store2.default.get('frequently');
 }
 
 function add(emoji) {
@@ -18,8 +28,8 @@ function add(emoji) {
   frequently[id] || (frequently[id] = 0);
   frequently[id] += 1;
 
-  store.set('last', id);
-  store.set('frequently', frequently);
+  _store2.default.set('last', id);
+  _store2.default.set('frequently', frequently);
 }
 
 function get(perLine) {
@@ -49,7 +59,7 @@ function get(perLine) {
   const sorted = frequentlyKeys.sort((a, b) => frequently[a] - frequently[b]).reverse();
   const sliced = sorted.slice(0, quantity);
 
-  const last = store.get('last');
+  const last = _store2.default.get('last');
 
   if (last && sliced.indexOf(last) == -1) {
     sliced.pop();
@@ -59,4 +69,4 @@ function get(perLine) {
   return sliced;
 }
 
-export default { add, get };
+exports.default = { add, get };

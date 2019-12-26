@@ -1,10 +1,28 @@
-import _extends from '../polyfills/extends';
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-import Skins from './skins';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-export default class SkinsDot extends Skins {
+var _extends2 = require('../polyfills/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _skins = require('./skins');
+
+var _skins2 = _interopRequireDefault(_skins);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class SkinsDot extends _skins2.default {
   constructor(props) {
     super(props);
 
@@ -27,15 +45,15 @@ export default class SkinsDot extends Skins {
     for (let skinTone = 1; skinTone <= 6; skinTone++) {
       const selected = skinTone === skin;
       const visible = opened || selected;
-      skinToneNodes.push(React.createElement(
+      skinToneNodes.push(_react2.default.createElement(
         'span',
-        _extends({
+        (0, _extends3.default)({
           key: `skin-tone-${skinTone}`,
           className: `emoji-mart-skin-swatch${selected ? ' selected' : ''}`,
           'aria-label': i18n.skintones[skinTone],
           'aria-hidden': !visible
         }, opened ? { role: 'menuitem' } : {}),
-        React.createElement('span', _extends({
+        _react2.default.createElement('span', (0, _extends3.default)({
           onClick: this.handleClick,
           onKeyDown: this.handleKeyDown,
           role: 'button'
@@ -52,13 +70,13 @@ export default class SkinsDot extends Skins {
       ));
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       {
         className: `emoji-mart-skin-swatches${opened ? ' opened' : ''}`,
         'aria-label': i18n.skintext
       },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         opened ? { role: 'menubar' } : {},
         skinToneNodes
@@ -67,10 +85,11 @@ export default class SkinsDot extends Skins {
   }
 }
 
+exports.default = SkinsDot;
 SkinsDot.propTypes /* remove-proptypes */ = {
-  onChange: PropTypes.func,
-  skin: PropTypes.number.isRequired,
-  i18n: PropTypes.object
+  onChange: _propTypes2.default.func,
+  skin: _propTypes2.default.number.isRequired,
+  i18n: _propTypes2.default.object
 };
 
 SkinsDot.defaultProps = {

@@ -1,11 +1,23 @@
-import { getData, getSanitizedData, intersect } from '..';
-import { uncompress } from '../data';
-import store from '../store';
+'use strict';
 
-export default class NimbleEmojiIndex {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _ = require('..');
+
+var _data = require('../data');
+
+var _store = require('../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class NimbleEmojiIndex {
   constructor(data, set) {
     if (data.compressed) {
-      uncompress(data);
+      (0, _data.uncompress)(data);
     }
 
     this.data = data || {};
@@ -39,10 +51,10 @@ export default class NimbleEmojiIndex {
       if (skin_variations) {
         this.emojis[id] = {};
         for (let skinTone = 1; skinTone <= 6; skinTone++) {
-          this.emojis[id][skinTone] = getSanitizedData({ id, skin: skinTone }, skinTone, this.set, this.data);
+          this.emojis[id][skinTone] = (0, _.getSanitizedData)({ id, skin: skinTone }, skinTone, this.set, this.data);
         }
       } else {
-        this.emojis[id] = getSanitizedData(id, null, this.set, this.data);
+        this.emojis[id] = (0, _.getSanitizedData)(id, null, this.set, this.data);
       }
 
       this.originalPool[id] = emojiData;
@@ -65,8 +77,8 @@ export default class NimbleEmojiIndex {
       let emojiId = emoji.id || emoji.short_names[0];
 
       if (emojiId && !pool[emojiId]) {
-        pool[emojiId] = getData(emoji, null, null, this.data);
-        this.emojis[emojiId] = getSanitizedData(emoji, null, null, this.data);
+        pool[emojiId] = (0, _.getData)(emoji, null, null, this.data);
+        this.emojis[emojiId] = (0, _.getSanitizedData)(emoji, null, null, this.data);
       }
     });
 
@@ -77,7 +89,7 @@ export default class NimbleEmojiIndex {
   search(value, { emojisToShowFilter, maxResults, include, exclude, custom = [] } = {}) {
     if (this.customEmojisList != custom) this.addCustomToPool(custom, this.originalPool);
 
-    const skinTone = store.get('skin') || 1;
+    const skinTone = _store2.default.get('skin') || 1;
 
     maxResults || (maxResults = 75);
     include || (include = []);
@@ -178,7 +190,7 @@ export default class NimbleEmojiIndex {
       }).filter(a => a);
 
       if (allResults.length > 1) {
-        results = intersect.apply(null, allResults);
+        results = _.intersect.apply(null, allResults);
       } else if (allResults.length) {
         results = allResults[0];
       } else {
@@ -199,3 +211,4 @@ export default class NimbleEmojiIndex {
     return results;
   }
 }
+exports.default = NimbleEmojiIndex;

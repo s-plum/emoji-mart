@@ -1,17 +1,35 @@
-import _extends from '../polyfills/extends';
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-import NimbleEmoji from './emoji/nimble-emoji';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-export default class NotFound extends React.PureComponent {
+var _extends2 = require('../polyfills/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _nimbleEmoji = require('./emoji/nimble-emoji');
+
+var _nimbleEmoji2 = _interopRequireDefault(_nimbleEmoji);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class NotFound extends _react2.default.PureComponent {
   render() {
     const { data, emojiProps, i18n, notFound, notFoundEmoji } = this.props;
 
-    const component = notFound && notFound() || React.createElement(
+    const component = notFound && notFound() || _react2.default.createElement(
       'div',
       { className: 'emoji-mart-no-results' },
-      NimbleEmoji(_extends({
+      (0, _nimbleEmoji2.default)((0, _extends3.default)({
         data: data
       }, emojiProps, {
         size: 38,
@@ -20,7 +38,7 @@ export default class NotFound extends React.PureComponent {
         onLeave: null,
         onClick: null
       })),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'emoji-mart-no-results-label' },
         i18n.notfound
@@ -31,7 +49,8 @@ export default class NotFound extends React.PureComponent {
   }
 }
 
+exports.default = NotFound;
 NotFound.propTypes /* remove-proptypes */ = {
-  notFound: PropTypes.func.isRequired,
-  emojiProps: PropTypes.object.isRequired
+  notFound: _propTypes2.default.func.isRequired,
+  emojiProps: _propTypes2.default.object.isRequired
 };

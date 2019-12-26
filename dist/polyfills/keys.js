@@ -1,10 +1,10 @@
-// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
-var hasOwnProperty = Object.prototype.hasOwnProperty,
-    hasDontEnumBug = !{ toString: null }.propertyIsEnumerable('toString'),
-    dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
-    dontEnumsLength = dontEnums.length;
+'use strict';
 
-export default function (obj) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (obj) {
   if (typeof obj !== 'function' && (typeof obj !== 'object' || obj === null)) {
     throw new TypeError('Object.keys called on non-object');
   }
@@ -27,4 +27,10 @@ export default function (obj) {
     }
   }
   return result;
-}
+};
+
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+var hasOwnProperty = Object.prototype.hasOwnProperty,
+    hasDontEnumBug = !{ toString: null }.propertyIsEnumerable('toString'),
+    dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
+    dontEnumsLength = dontEnums.length;

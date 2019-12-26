@@ -1,8 +1,25 @@
-import _JSON$stringify from 'babel-runtime/core-js/json/stringify';
-import _Object$keys from '../polyfills/keys';
-import { buildSearch } from './data';
-import stringFromCodePoint from '../polyfills/stringFromCodePoint';
-import { uncompress } from './data';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.throttleIdleTask = exports.measureScrollbar = exports.unifiedToNative = exports.deepMerge = exports.intersect = exports.uniq = exports.getSanitizedData = exports.getEmojiDataFromNative = exports.getData = undefined;
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _keys = require('../polyfills/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _data = require('./data');
+
+var _stringFromCodePoint = require('../polyfills/stringFromCodePoint');
+
+var _stringFromCodePoint2 = _interopRequireDefault(_stringFromCodePoint);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const COLONS_REGEX = /^(?:\:([^\:]+)\:)(?:\:skin-tone-(\d)\:)?$/;
 const SKINS = ['1F3FA', '1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF'];
@@ -11,7 +28,7 @@ function unifiedToNative(unified) {
   var unicodes = unified.split('-'),
       codePoints = unicodes.map(u => `0x${u}`);
 
-  return stringFromCodePoint.apply(null, codePoints);
+  return _stringFromCodePoint2.default.apply(null, codePoints);
 }
 
 function sanitize(emoji) {
@@ -96,12 +113,12 @@ function getData(emoji, skin, set, data) {
     }
   }
 
-  if (!_Object$keys(emojiData).length) {
+  if (!(0, _keys2.default)(emojiData).length) {
     emojiData = emoji;
     emojiData.custom = true;
 
     if (!emojiData.search) {
-      emojiData.search = buildSearch(emoji);
+      emojiData.search = (0, _data.buildSearch)(emoji);
     }
   }
 
@@ -109,7 +126,7 @@ function getData(emoji, skin, set, data) {
   emojiData.variations || (emojiData.variations = []);
 
   if (emojiData.skin_variations && skin > 1) {
-    emojiData = JSON.parse(_JSON$stringify(emojiData));
+    emojiData = JSON.parse((0, _stringify2.default)(emojiData));
 
     var skinKey = SKINS[skin - 1],
         variationData = emojiData.skin_variations[skinKey];
@@ -129,7 +146,7 @@ function getData(emoji, skin, set, data) {
   }
 
   if (emojiData.variations && emojiData.variations.length) {
-    emojiData = JSON.parse(_JSON$stringify(emojiData));
+    emojiData = JSON.parse((0, _stringify2.default)(emojiData));
     emojiData.unified = emojiData.variations.shift();
   }
 
@@ -138,7 +155,7 @@ function getData(emoji, skin, set, data) {
 
 function getEmojiDataFromNative(nativeString, set, data) {
   if (data.compressed) {
-    uncompress(data);
+    (0, _data.uncompress)(data);
   }
 
   const skinTones = ['🏻', '🏼', '🏽', '🏾', '🏿'];
@@ -256,4 +273,12 @@ function throttleIdleTask(func) {
   };
 }
 
-export { getData, getEmojiDataFromNative, getSanitizedData, uniq, intersect, deepMerge, unifiedToNative, measureScrollbar, throttleIdleTask };
+exports.getData = getData;
+exports.getEmojiDataFromNative = getEmojiDataFromNative;
+exports.getSanitizedData = getSanitizedData;
+exports.uniq = uniq;
+exports.intersect = intersect;
+exports.deepMerge = deepMerge;
+exports.unifiedToNative = unifiedToNative;
+exports.measureScrollbar = measureScrollbar;
+exports.throttleIdleTask = throttleIdleTask;

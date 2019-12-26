@@ -1,7 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-export default class Anchors extends React.PureComponent {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Anchors extends _react2.default.PureComponent {
   constructor(props) {
     super(props);
 
@@ -34,7 +47,7 @@ export default class Anchors extends React.PureComponent {
     var { categories, color, i18n, icons } = this.props,
         { selected } = this.state;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'nav',
       { className: 'emoji-mart-anchors', 'aria-label': i18n.categorieslabel },
       categories.map((category, i) => {
@@ -47,7 +60,7 @@ export default class Anchors extends React.PureComponent {
 
         const iconId = id.startsWith('custom-') ? 'custom' : id;
 
-        return React.createElement(
+        return _react2.default.createElement(
           'button',
           {
             type: 'button',
@@ -60,12 +73,12 @@ export default class Anchors extends React.PureComponent {
             className: `emoji-mart-anchor ${isSelected ? 'emoji-mart-anchor-selected' : ''}`,
             style: { color: isSelected ? color : null }
           },
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'emoji-mart-anchor-icon' },
             icons.categories[id]()
           ),
-          React.createElement('span', {
+          _react2.default.createElement('span', {
             className: 'emoji-mart-anchor-bar',
             style: { backgroundColor: color }
           })
@@ -75,10 +88,11 @@ export default class Anchors extends React.PureComponent {
   }
 }
 
+exports.default = Anchors;
 Anchors.propTypes /* remove-proptypes */ = {
-  categories: PropTypes.array,
-  onAnchorClick: PropTypes.func,
-  icons: PropTypes.object
+  categories: _propTypes2.default.array,
+  onAnchorClick: _propTypes2.default.func,
+  icons: _propTypes2.default.object
 };
 
 Anchors.defaultProps = {
