@@ -1,12 +1,6 @@
-'use strict';
+const _Object = Object;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = inherits;
-var _Object = Object;
-
-function inherits(subClass, superClass) {
+export default function inherits(subClass, superClass) {
   if (typeof superClass !== 'function' && superClass !== null) {
     throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
   }

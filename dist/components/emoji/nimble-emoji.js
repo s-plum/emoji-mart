@@ -1,100 +1,76 @@
-'use strict';
+import _extends from '../../polyfills/extends';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { getData, getSanitizedData, unifiedToNative } from '../../utils';
+import { uncompress } from '../../utils/data';
+import { EmojiPropTypes } from '../../utils/shared-props';
+import { EmojiDefaultProps } from '../../utils/shared-default-props';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _utils = require('../../utils');
-
-var _data = require('../../utils/data');
-
-var _sharedProps = require('../../utils/shared-props');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _getData = function _getData(props) {
-  var emoji = props.emoji;
-  var skin = props.skin;
-  var set = props.set;
-  var data = props.data;
-
-  return (0, _utils.getData)(emoji, skin, set, data);
+const _getData = props => {
+  var { emoji, skin, set, data } = props;
+  return getData(emoji, skin, set, data);
 };
 
-var _getPosition = function _getPosition(props) {
-  var _getData2 = _getData(props);
+const _getPosition = props => {
+  var { sheet_x, sheet_y } = _getData(props),
+      multiplyX = 100 / (props.sheetColumns - 1),
+      multiplyY = 100 / (props.sheetRows - 1);
 
-  var sheet_x = _getData2.sheet_x;
-  var sheet_y = _getData2.sheet_y;
-  var multiplyX = 100 / (props.sheetColumns - 1);
-  var multiplyY = 100 / (props.sheetRows - 1);
-
-  return multiplyX * sheet_x + '% ' + multiplyY * sheet_y + '%';
+  return `${multiplyX * sheet_x}% ${multiplyY * sheet_y}%`;
 };
 
-var _getSanitizedData = function _getSanitizedData(props) {
-  var emoji = props.emoji;
-  var skin = props.skin;
-  var set = props.set;
-  var data = props.data;
-
-  return (0, _utils.getSanitizedData)(emoji, skin, set, data);
+const _getSanitizedData = props => {
+  var { emoji, skin, set, data } = props;
+  return getSanitizedData(emoji, skin, set, data);
 };
 
-var _handleClick = function _handleClick(e, props) {
+const _handleClick = (e, props) => {
   if (!props.onClick) {
     return;
   }
-  var onClick = props.onClick;
-  var emoji = _getSanitizedData(props);
+  var { onClick } = props,
+      emoji = _getSanitizedData(props);
 
   onClick(emoji, e);
 };
 
-var _handleKeyDown = function _handleKeyDown(e, props) {
+const _handleKeyDown = (e, props) => {
   var code = e.keyCode ? e.keyCode : e.which;
   if (code == 13) {
     _handleClick(e, props);
   }
 };
 
-var _handleOver = function _handleOver(e, props) {
+const _handleOver = (e, props) => {
   if (!props.onOver) {
     return;
   }
-  var onOver = props.onOver;
-  var emoji = _getSanitizedData(props);
+  var { onOver } = props,
+      emoji = _getSanitizedData(props);
 
   onOver(emoji, e);
 };
 
-var _handleLeave = function _handleLeave(e, props) {
+const _handleLeave = (e, props) => {
   if (!props.onLeave) {
     return;
   }
-  var onLeave = props.onLeave;
-  var emoji = _getSanitizedData(props);
+  var { onLeave } = props,
+      emoji = _getSanitizedData(props);
 
   onLeave(emoji, e);
 };
 
-var _isNumeric = function _isNumeric(value) {
+const _isNumeric = value => {
   return !isNaN(value - parseFloat(value));
 };
 
-var _convertStyleToCSS = function _convertStyleToCSS(style) {
-  var div = document.createElement('div');
+const _convertStyleToCSS = style => {
+  let div = document.createElement('div');
 
-  for (var key in style) {
-    var value = style[key];
+  for (let key in style) {
+    let value = style[key];
 
     if (_isNumeric(value)) {
       value += 'px';
@@ -106,18 +82,18 @@ var _convertStyleToCSS = function _convertStyleToCSS(style) {
   return div.getAttribute('style');
 };
 
-var NimbleEmoji = function NimbleEmoji(props) {
+const NimbleEmoji = props => {
   if (props.data.compressed) {
-    (0, _data.uncompress)(props.data);
+    uncompress(props.data);
   }
 
-  for (var k in NimbleEmoji.defaultProps) {
+  for (let k in NimbleEmoji.defaultProps) {
     if (props[k] == undefined && NimbleEmoji.defaultProps[k] != undefined) {
       props[k] = NimbleEmoji.defaultProps[k];
     }
   }
 
-  var data = _getData(props);
+  let data = _getData(props);
   if (!data) {
     if (props.fallback) {
       return props.fallback(null, props);
@@ -126,14 +102,15 @@ var NimbleEmoji = function NimbleEmoji(props) {
     }
   }
 
-  var unified = data.unified;
-  var custom = data.custom;
-  var short_names = data.short_names;
-  var imageUrl = data.imageUrl;
-  var style = {};
-  var children = props.children;
-  var className = 'emoji-mart-emoji';
-  var title = null;
+  let { unified, custom, short_names, imageUrl } = data,
+      style = {},
+      children = props.children,
+      className = 'emoji-mart-emoji',
+      nativeEmoji = unified && unifiedToNative(unified),
+
+  // combine the emoji itself and all shortcodes into an accessible label
+  label = [nativeEmoji].concat(short_names).filter(Boolean).join(', '),
+      title = null;
 
   if (!unified && !custom) {
     if (props.fallback) {
@@ -150,24 +127,37 @@ var NimbleEmoji = function NimbleEmoji(props) {
   if (props.native && unified) {
     className += ' emoji-mart-emoji-native';
     style = { fontSize: props.size };
-    children = (0, _utils.unifiedToNative)(unified);
+    children = nativeEmoji;
 
     if (props.forceSize) {
       style.display = 'inline-block';
       style.width = props.size;
       style.height = props.size;
+      style.wordBreak = 'keep-all';
     }
   } else if (custom) {
     className += ' emoji-mart-emoji-custom';
     style = {
       width: props.size,
       height: props.size,
-      display: 'inline-block',
-      backgroundImage: 'url(' + imageUrl + ')',
-      backgroundSize: 'contain'
+      display: 'inline-block'
     };
+    if (data.spriteUrl) {
+      style = _extends({}, style, {
+        backgroundImage: `url(${data.spriteUrl})`,
+        backgroundSize: `${100 * props.sheetColumns}% ${100 * props.sheetRows}%`,
+        backgroundPosition: _getPosition(props)
+      });
+    } else {
+      style = _extends({}, style, {
+        backgroundImage: `url(${imageUrl})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+      });
+    }
   } else {
-    var setHasEmoji = data['has_img_' + props.set] == undefined || data['has_img_' + props.set];
+    let setHasEmoji = data[`has_img_${props.set}`] == undefined || data[`has_img_${props.set}`];
 
     if (!setHasEmoji) {
       if (props.fallback) {
@@ -180,52 +170,41 @@ var NimbleEmoji = function NimbleEmoji(props) {
         width: props.size,
         height: props.size,
         display: 'inline-block',
-        backgroundImage: 'url(' + props.backgroundImageFn(props.set, props.sheetSize) + ')',
-        backgroundSize: 100 * props.sheetColumns + '% ' + 100 * props.sheetRows + '%',
+        backgroundImage: `url(${props.backgroundImageFn(props.set, props.sheetSize)})`,
+        backgroundSize: `${100 * props.sheetColumns}% ${100 * props.sheetRows}%`,
         backgroundPosition: _getPosition(props)
       };
     }
   }
 
+  var Tag = {
+    name: 'span',
+    props: {}
+  };
+
+  if (props.onClick && !props.readonly) {
+    Tag.name = 'button';
+    Tag.props = {
+      type: 'button'
+    };
+  }
+
   if (props.html) {
     style = _convertStyleToCSS(style);
-    return '<span style=\'' + style + '\' ' + (title ? 'title=\'' + title + '\'' : '') + ' class=\'' + className + '\'>' + (children || '') + '</span>';
-  } else if (props.readonly) {
-    return _react2.default.createElement(
-      'span',
-      {
-        key: props.emoji.id || props.emoji,
+    return `<${Tag.name} style='${style}' aria-label='${label}' ${title ? `title='${title}'` : ''} class='${className}'>${children || ''}</${Tag.name}>`;
+  } else {
+    return React.createElement(
+      Tag.name,
+      _extends({
+        onClick: e => _handleClick(e, props),
+        onKeyDown: e => _handleKeyDown(e, props),
+        onMouseEnter: e => _handleOver(e, props),
+        onMouseLeave: e => _handleLeave(e, props),
+        'aria-label': label,
         title: title,
         className: className
-      },
-      _react2.default.createElement(
-        'span',
-        { style: style },
-        children
-      )
-    );
-  } else {
-    return _react2.default.createElement(
-      'button',
-      {
-        type: 'button',
-        key: props.emoji.id || props.emoji,
-        onClick: function onClick(e) {
-          return _handleClick(e, props);
-        },
-        onKeyDown: function onKeyDown(e) {
-          return _handleKeyDown(e, props);
-        },
-        onMouseEnter: function onMouseEnter(e) {
-          return _handleOver(e, props);
-        },
-        onMouseLeave: function onMouseLeave(e) {
-          return _handleLeave(e, props);
-        },
-        title: short_names[0],
-        className: className
-      },
-      _react2.default.createElement(
+      }, Tag.props),
+      React.createElement(
         'span',
         { style: style },
         children
@@ -234,6 +213,9 @@ var NimbleEmoji = function NimbleEmoji(props) {
   }
 };
 
-NimbleEmoji.defaultProps = _sharedProps.EmojiDefaultProps;
+NimbleEmoji.propTypes /* remove-proptypes */ = _extends({}, EmojiPropTypes, {
+  data: PropTypes.object.isRequired
+});
+NimbleEmoji.defaultProps = EmojiDefaultProps;
 
-exports.default = NimbleEmoji;
+export default NimbleEmoji;

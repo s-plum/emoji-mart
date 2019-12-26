@@ -1,98 +1,78 @@
-'use strict';
+import _extends from '../polyfills/extends';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import Skins from './skins';
 
-var _objectGetPrototypeOf = require('../polyfills/objectGetPrototypeOf');
+export default class SkinsDot extends Skins {
+  constructor(props) {
+    super(props);
 
-var _objectGetPrototypeOf2 = _interopRequireDefault(_objectGetPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('../polyfills/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('../polyfills/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('../polyfills/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _ = require('.');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SkinsDot = function (_Skins) {
-  (0, _inherits3.default)(SkinsDot, _Skins);
-
-  function SkinsDot(props) {
-    (0, _classCallCheck3.default)(this, SkinsDot);
-
-    var _this = (0, _possibleConstructorReturn3.default)(this, (SkinsDot.__proto__ || (0, _objectGetPrototypeOf2.default)(SkinsDot)).call(this, props));
-
-    _this.handleClick = _this.handleClick.bind(_this);
-    return _this;
+    this.handleClick = this.handleClick.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  (0, _createClass3.default)(SkinsDot, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props;
-      var skin = _props.skin;
-      var i18n = _props.i18n;
-      var opened = this.state.opened;
-
-      var skinToneNodes = [];
-
-      for (var skinTone = 1; skinTone <= 6; skinTone++) {
-        var selected = skinTone === skin;
-        skinToneNodes.push(_react2.default.createElement(
-          'span',
-          {
-            key: 'skin-tone-' + skinTone,
-            className: 'emoji-mart-skin-swatch' + (selected ? ' selected' : '')
-          },
-          _react2.default.createElement('span', {
-            onClick: this.handleClick,
-            'data-skin': skinTone,
-            className: 'emoji-mart-skin emoji-mart-skin-tone-' + skinTone
-          })
-        ));
-      }
-
-      return _react2.default.createElement(
-        'div',
-        { className: 'emoji-mart-skin-swatches' + (opened ? ' opened' : '') },
-        skinToneNodes
-      );
+  handleKeyDown(event) {
+    // if either enter or space is pressed, then execute
+    if (event.keyCode === 13 || event.keyCode === 32) {
+      this.handleClick(event);
     }
-  }]);
-  return SkinsDot;
-}(_.Skins);
+  }
 
-exports.default = SkinsDot;
+  render() {
+    const { skin, i18n } = this.props;
+    const { opened } = this.state;
+    const skinToneNodes = [];
 
+    for (let skinTone = 1; skinTone <= 6; skinTone++) {
+      const selected = skinTone === skin;
+      const visible = opened || selected;
+      skinToneNodes.push(React.createElement(
+        'span',
+        _extends({
+          key: `skin-tone-${skinTone}`,
+          className: `emoji-mart-skin-swatch${selected ? ' selected' : ''}`,
+          'aria-label': i18n.skintones[skinTone],
+          'aria-hidden': !visible
+        }, opened ? { role: 'menuitem' } : {}),
+        React.createElement('span', _extends({
+          onClick: this.handleClick,
+          onKeyDown: this.handleKeyDown,
+          role: 'button'
+        }, selected ? {
+          'aria-haspopup': true,
+          'aria-expanded': !!opened
+        } : {}, opened ? { 'aria-pressed': !!selected } : {}, {
+          tabIndex: visible ? '0' : '',
+          'aria-label': i18n.skintones[skinTone],
+          title: i18n.skintones[skinTone],
+          'data-skin': skinTone,
+          className: `emoji-mart-skin emoji-mart-skin-tone-${skinTone}`
+        }))
+      ));
+    }
 
-SkinsDot.propTypes = {
-  onChange: _propTypes2.default.func,
-  skin: _propTypes2.default.number.isRequired,
-  i18n: _propTypes2.default.object
+    return React.createElement(
+      'section',
+      {
+        className: `emoji-mart-skin-swatches${opened ? ' opened' : ''}`,
+        'aria-label': i18n.skintext
+      },
+      React.createElement(
+        'div',
+        opened ? { role: 'menubar' } : {},
+        skinToneNodes
+      )
+    );
+  }
+}
+
+SkinsDot.propTypes /* remove-proptypes */ = {
+  onChange: PropTypes.func,
+  skin: PropTypes.number.isRequired,
+  i18n: PropTypes.object
 };
 
 SkinsDot.defaultProps = {
-  onChange: function onChange() {}
+  onChange: () => {}
 };

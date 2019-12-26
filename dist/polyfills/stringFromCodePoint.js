@@ -1,11 +1,6 @@
-'use strict';
+const _String = String;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _String = String;
-
-exports.default = _String.fromCodePoint || function stringFromCodePoint() {
+export default _String.fromCodePoint || function stringFromCodePoint() {
   var MAX_SIZE = 0x4000;
   var codeUnits = [];
   var highSurrogate;

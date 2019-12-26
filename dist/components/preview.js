@@ -1,200 +1,157 @@
-'use strict';
+import _extends from '../polyfills/extends';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { getData } from '../utils';
+import NimbleEmoji from './emoji/nimble-emoji';
+import SkinsEmoji from './skins-emoji';
+import SkinsDot from './skins-dot';
 
-var _extends2 = require('../polyfills/extends');
+export default class Preview extends React.PureComponent {
+  constructor(props) {
+    super(props);
 
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _objectGetPrototypeOf = require('../polyfills/objectGetPrototypeOf');
-
-var _objectGetPrototypeOf2 = _interopRequireDefault(_objectGetPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('../polyfills/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('../polyfills/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('../polyfills/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _utils = require('../utils');
-
-var _ = require('.');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Preview = function (_React$PureComponent) {
-  (0, _inherits3.default)(Preview, _React$PureComponent);
-
-  function Preview(props) {
-    (0, _classCallCheck3.default)(this, Preview);
-
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Preview.__proto__ || (0, _objectGetPrototypeOf2.default)(Preview)).call(this, props));
-
-    _this.data = props.data;
-    _this.state = { emoji: null };
-    return _this;
+    this.data = props.data;
+    this.state = { emoji: null };
   }
 
-  (0, _createClass3.default)(Preview, [{
-    key: 'render',
-    value: function render() {
-      var emoji = this.state.emoji;
-      var _props = this.props;
-      var emojiProps = _props.emojiProps;
-      var skinsProps = _props.skinsProps;
-      var showSkinTones = _props.showSkinTones;
-      var title = _props.title;
-      var idleEmoji = _props.emoji;
-      var i18n = _props.i18n;
+  render() {
+    var { emoji } = this.state,
+        {
+      emojiProps,
+      skinsProps,
+      showSkinTones,
+      title,
+      emoji: idleEmoji,
+      i18n,
+      showPreview
+    } = this.props;
 
+    if (emoji && showPreview) {
+      var emojiData = getData(emoji, null, null, this.data),
+          { emoticons = [] } = emojiData,
+          knownEmoticons = [],
+          listedEmoticons = [];
 
-      if (emoji) {
-        var emojiData = (0, _utils.getData)(emoji, null, null, this.data);
-        var _emojiData$emoticons = emojiData.emoticons;
-        var emoticons = _emojiData$emoticons === undefined ? [] : _emojiData$emoticons;
-        var knownEmoticons = [];
-        var listedEmoticons = [];
+      emoticons.forEach(emoticon => {
+        if (knownEmoticons.indexOf(emoticon.toLowerCase()) >= 0) {
+          return;
+        }
 
-        emoticons.forEach(function (emoticon) {
-          if (knownEmoticons.indexOf(emoticon.toLowerCase()) >= 0) {
-            return;
-          }
+        knownEmoticons.push(emoticon.toLowerCase());
+        listedEmoticons.push(emoticon);
+      });
 
-          knownEmoticons.push(emoticon.toLowerCase());
-          listedEmoticons.push(emoticon);
-        });
-
-        return _react2.default.createElement(
+      return React.createElement(
+        'div',
+        { className: 'emoji-mart-preview' },
+        React.createElement(
           'div',
-          { className: 'emoji-mart-preview' },
-          _react2.default.createElement(
-            'div',
-            { className: 'emoji-mart-preview-emoji' },
-            (0, _.NimbleEmoji)((0, _extends3.default)({
-              key: emoji.id,
-              emoji: emoji,
-              data: this.data
-            }, emojiProps))
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'emoji-mart-preview-data' },
-            _react2.default.createElement(
-              'div',
-              { className: 'emoji-mart-preview-name' },
-              emoji.name
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'emoji-mart-preview-shortnames' },
-              emojiData.short_names.map(function (short_name) {
-                return _react2.default.createElement(
-                  'span',
-                  { key: short_name, className: 'emoji-mart-preview-shortname' },
-                  ':',
-                  short_name,
-                  ':'
-                );
-              })
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'emoji-mart-preview-emoticons' },
-              listedEmoticons.map(function (emoticon) {
-                return _react2.default.createElement(
-                  'span',
-                  { key: emoticon, className: 'emoji-mart-preview-emoticon' },
-                  emoticon
-                );
-              })
-            )
-          ),
-          showSkinTones && _react2.default.createElement(
-            'div',
-            {
-              className: 'emoji-mart-preview-skins' + (skinsProps.skinEmoji ? ' custom' : '')
-            },
-            skinsProps.skinEmoji ? _react2.default.createElement(_.SkinsEmoji, {
-              skin: skinsProps.skin,
-              emojiProps: emojiProps,
-              data: this.data,
-              skinEmoji: skinsProps.skinEmoji,
-              i18n: i18n,
-              onChange: skinsProps.onChange
-            }) : _react2.default.createElement(_.SkinsDot, {
-              skin: skinsProps.skin,
-              i18n: i18n,
-              onChange: skinsProps.onChange
-            })
-          )
-        );
-      } else {
-        return _react2.default.createElement(
+          { className: 'emoji-mart-preview-emoji', 'aria-hidden': 'true' },
+          NimbleEmoji(_extends({
+            key: emoji.id,
+            emoji: emoji,
+            data: this.data
+          }, emojiProps))
+        ),
+        React.createElement(
           'div',
-          { className: 'emoji-mart-preview' },
-          _react2.default.createElement(
+          { className: 'emoji-mart-preview-data', 'aria-hidden': 'true' },
+          React.createElement(
             'div',
-            { className: 'emoji-mart-preview-emoji' },
-            idleEmoji && idleEmoji.length && (0, _.NimbleEmoji)((0, _extends3.default)({ emoji: idleEmoji, data: this.data }, emojiProps))
+            { className: 'emoji-mart-preview-name' },
+            emoji.name
           ),
-          _react2.default.createElement(
+          React.createElement(
             'div',
-            { className: 'emoji-mart-preview-data' },
-            _react2.default.createElement(
+            { className: 'emoji-mart-preview-shortnames' },
+            emojiData.short_names.map(short_name => React.createElement(
               'span',
-              { className: 'emoji-mart-title-label' },
-              title
-            )
+              { key: short_name, className: 'emoji-mart-preview-shortname' },
+              ':',
+              short_name,
+              ':'
+            ))
           ),
-          showSkinTones && _react2.default.createElement(
+          React.createElement(
             'div',
-            {
-              className: 'emoji-mart-preview-skins' + (skinsProps.skinEmoji ? ' custom' : '')
-            },
-            skinsProps.skinEmoji ? _react2.default.createElement(_.SkinsEmoji, {
-              skin: skinsProps.skin,
-              emojiProps: emojiProps,
-              data: this.data,
-              skinEmoji: skinsProps.skinEmoji,
-              i18n: i18n,
-              onChange: skinsProps.onChange
-            }) : _react2.default.createElement(_.SkinsDot, {
-              skin: skinsProps.skin,
-              i18n: i18n,
-              onChange: skinsProps.onChange
-            })
+            { className: 'emoji-mart-preview-emoticons' },
+            listedEmoticons.map(emoticon => React.createElement(
+              'span',
+              { key: emoticon, className: 'emoji-mart-preview-emoticon' },
+              emoticon
+            ))
           )
-        );
-      }
+        ),
+        showSkinTones && React.createElement(
+          'div',
+          {
+            className: `emoji-mart-preview-skins${skinsProps.skinEmoji ? ' custom' : ''}`
+          },
+          skinsProps.skinEmoji ? React.createElement(SkinsEmoji, {
+            skin: skinsProps.skin,
+            emojiProps: emojiProps,
+            data: this.data,
+            skinEmoji: skinsProps.skinEmoji,
+            i18n: i18n,
+            onChange: skinsProps.onChange
+          }) : React.createElement(SkinsDot, {
+            skin: skinsProps.skin,
+            i18n: i18n,
+            onChange: skinsProps.onChange
+          })
+        )
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'emoji-mart-preview' },
+        React.createElement(
+          'div',
+          { className: 'emoji-mart-preview-emoji', 'aria-hidden': 'true' },
+          idleEmoji && idleEmoji.length && NimbleEmoji(_extends({ emoji: idleEmoji, data: this.data }, emojiProps))
+        ),
+        React.createElement(
+          'div',
+          { className: 'emoji-mart-preview-data', 'aria-hidden': 'true' },
+          React.createElement(
+            'span',
+            { className: 'emoji-mart-title-label' },
+            title
+          )
+        ),
+        showSkinTones && React.createElement(
+          'div',
+          {
+            className: `emoji-mart-preview-skins${skinsProps.skinEmoji ? ' custom' : ''}`
+          },
+          skinsProps.skinEmoji ? React.createElement(SkinsEmoji, {
+            skin: skinsProps.skin,
+            emojiProps: emojiProps,
+            data: this.data,
+            skinEmoji: skinsProps.skinEmoji,
+            i18n: i18n,
+            onChange: skinsProps.onChange
+          }) : React.createElement(SkinsDot, {
+            skin: skinsProps.skin,
+            i18n: i18n,
+            onChange: skinsProps.onChange
+          })
+        )
+      );
     }
-  }]);
-  return Preview;
-}(_react2.default.PureComponent);
+  }
+}
 
-exports.default = Preview;
-
+Preview.propTypes /* remove-proptypes */ = {
+  showSkinTones: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  emoji: PropTypes.string.isRequired,
+  emojiProps: PropTypes.object.isRequired,
+  skinsProps: PropTypes.object.isRequired
+};
 
 Preview.defaultProps = {
   showSkinTones: true,
-  onChange: function onChange() {}
+  onChange: () => {}
 };

@@ -1,40 +1,23 @@
-'use strict';
+import _extends from '../../polyfills/extends';
+import React from 'react';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import data from '../../../data/all.json';
+import NimbleEmoji from './nimble-emoji';
 
-var _extends2 = require('../../polyfills/extends');
+import { EmojiPropTypes } from '../../utils/shared-props';
+import { EmojiDefaultProps } from '../../utils/shared-default-props';
 
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _all = require('../../../data/all.json');
-
-var _all2 = _interopRequireDefault(_all);
-
-var _nimbleEmoji = require('./nimble-emoji');
-
-var _nimbleEmoji2 = _interopRequireDefault(_nimbleEmoji);
-
-var _sharedProps = require('../../utils/shared-props');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Emoji = function Emoji(props) {
-  for (var k in Emoji.defaultProps) {
+const Emoji = props => {
+  for (let k in Emoji.defaultProps) {
     if (props[k] == undefined && Emoji.defaultProps[k] != undefined) {
       props[k] = Emoji.defaultProps[k];
     }
   }
 
-  return (0, _nimbleEmoji2.default)((0, _extends3.default)({}, props));
+  return NimbleEmoji(_extends({}, props));
 };
 
-Emoji.propTypes = _sharedProps.EmojiPropTypes;
-Emoji.defaultProps = (0, _extends3.default)({}, _sharedProps.EmojiDefaultProps, { data: _all2.default });
+Emoji.propTypes /* remove-proptypes */ = EmojiPropTypes;
+Emoji.defaultProps = _extends({}, EmojiDefaultProps, { data });
 
-exports.default = Emoji;
+export default Emoji;

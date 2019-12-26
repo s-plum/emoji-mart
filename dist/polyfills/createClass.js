@@ -1,11 +1,6 @@
-'use strict';
+const _Object = Object;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _Object = Object;
-
-exports.default = function createClass() {
+export default (function createClass() {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -21,4 +16,4 @@ exports.default = function createClass() {
     if (staticProps) defineProperties(Constructor, staticProps);
     return Constructor;
   };
-}();
+})();

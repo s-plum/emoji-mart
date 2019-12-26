@@ -1,11 +1,6 @@
-"use strict";
+const _Object = Object;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _Object = Object;
-
-exports.default = _Object.assign || function (target) {
+export default _Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 

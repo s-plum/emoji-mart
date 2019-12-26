@@ -1,16 +1,10 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import _JSON$stringify from 'babel-runtime/core-js/json/stringify';
 var NAMESPACE = 'emoji-mart';
-
-var _JSON = JSON;
 
 var isLocalStorageSupported = typeof window !== 'undefined' && 'localStorage' in window;
 
-var getter = void 0;
-var setter = void 0;
+let getter;
+let setter;
 
 function setHandlers(handlers) {
   handlers || (handlers = {});
@@ -24,8 +18,8 @@ function setNamespace(namespace) {
 }
 
 function update(state) {
-  for (var key in state) {
-    var value = state[key];
+  for (let key in state) {
+    let value = state[key];
     set(key, value);
   }
 }
@@ -36,7 +30,7 @@ function set(key, value) {
   } else {
     if (!isLocalStorageSupported) return;
     try {
-      window.localStorage[NAMESPACE + '.' + key] = _JSON.stringify(value);
+      window.localStorage[`${NAMESPACE}.${key}`] = _JSON$stringify(value);
     } catch (e) {}
   }
 }
@@ -47,15 +41,15 @@ function get(key) {
   } else {
     if (!isLocalStorageSupported) return;
     try {
-      var value = window.localStorage[NAMESPACE + '.' + key];
+      var value = window.localStorage[`${NAMESPACE}.${key}`];
+
+      if (value) {
+        return JSON.parse(value);
+      }
     } catch (e) {
       return;
-    }
-
-    if (value) {
-      return JSON.parse(value);
     }
   }
 }
 
-exports.default = { update: update, set: set, get: get, setNamespace: setNamespace, setHandlers: setHandlers };
+export default { update, set, get, setNamespace, setHandlers };

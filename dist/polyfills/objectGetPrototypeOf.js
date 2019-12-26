@@ -1,11 +1,6 @@
-'use strict';
+const _Object = Object;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _Object = Object;
-
-exports.default = _Object.getPrototypeOf || function (O) {
+export default _Object.getPrototypeOf || function (O) {
   O = Object(O);
 
   if (typeof O.constructor === 'function' && O instanceof O.constructor) {

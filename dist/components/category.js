@@ -1,292 +1,241 @@
-'use strict';
+import _extends from '../polyfills/extends';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import frequently from '../utils/frequently';
+import { getData } from '../utils';
+import NimbleEmoji from './emoji/nimble-emoji';
+import NotFound from './not-found';
 
-var _extends2 = require('../polyfills/extends');
+export default class Category extends React.Component {
+  constructor(props) {
+    super(props);
 
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _objectGetPrototypeOf = require('../polyfills/objectGetPrototypeOf');
-
-var _objectGetPrototypeOf2 = _interopRequireDefault(_objectGetPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('../polyfills/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('../polyfills/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('../polyfills/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _frequently = require('../utils/frequently');
-
-var _frequently2 = _interopRequireDefault(_frequently);
-
-var _utils = require('../utils');
-
-var _ = require('.');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Category = function (_React$Component) {
-  (0, _inherits3.default)(Category, _React$Component);
-
-  function Category(props) {
-    (0, _classCallCheck3.default)(this, Category);
-
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Category.__proto__ || (0, _objectGetPrototypeOf2.default)(Category)).call(this, props));
-
-    _this.data = props.data;
-    _this.setContainerRef = _this.setContainerRef.bind(_this);
-    _this.setLabelRef = _this.setLabelRef.bind(_this);
-    return _this;
+    this.data = props.data;
+    this.setContainerRef = this.setContainerRef.bind(this);
+    this.setLabelRef = this.setLabelRef.bind(this);
   }
 
-  (0, _createClass3.default)(Category, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.parent = this.container.parentNode;
+  componentDidMount() {
+    this.margin = 0;
+    this.minMargin = 0;
 
-      this.margin = 0;
-      this.minMargin = 0;
+    this.memoizeSize();
+  }
 
-      this.memoizeSize();
+  shouldComponentUpdate(nextProps, nextState) {
+    var {
+      name,
+      perLine,
+      native,
+      hasStickyPosition,
+      emojis,
+      emojiProps
+    } = this.props,
+        { skin, size, set } = emojiProps,
+        {
+      perLine: nextPerLine,
+      native: nextNative,
+      hasStickyPosition: nextHasStickyPosition,
+      emojis: nextEmojis,
+      emojiProps: nextEmojiProps
+    } = nextProps,
+        { skin: nextSkin, size: nextSize, set: nextSet } = nextEmojiProps,
+        shouldUpdate = false;
+
+    if (name == 'Recent' && perLine != nextPerLine) {
+      shouldUpdate = true;
     }
-  }, {
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      var _props = this.props;
-      var name = _props.name;
-      var perLine = _props.perLine;
-      var native = _props.native;
-      var hasStickyPosition = _props.hasStickyPosition;
-      var emojis = _props.emojis;
-      var emojiProps = _props.emojiProps;
-      var skin = emojiProps.skin;
-      var size = emojiProps.size;
-      var set = emojiProps.set;
-      var nextPerLine = nextProps.perLine;
-      var nextNative = nextProps.native;
-      var nextHasStickyPosition = nextProps.hasStickyPosition;
-      var nextEmojis = nextProps.emojis;
-      var nextEmojiProps = nextProps.emojiProps;
-      var nextSkin = nextEmojiProps.skin;
-      var nextSize = nextEmojiProps.size;
-      var nextSet = nextEmojiProps.set;
-      var shouldUpdate = false;
 
-      if (name == 'Recent' && perLine != nextPerLine) {
-        shouldUpdate = true;
-      }
-
-      if (name == 'Search') {
-        shouldUpdate = !(emojis == nextEmojis);
-      }
-
-      if (skin != nextSkin || size != nextSize || native != nextNative || set != nextSet || hasStickyPosition != nextHasStickyPosition) {
-        shouldUpdate = true;
-      }
-
-      return shouldUpdate;
+    if (name == 'Search') {
+      shouldUpdate = !(emojis == nextEmojis);
     }
-  }, {
-    key: 'memoizeSize',
-    value: function memoizeSize() {
-      var _container$getBoundin = this.container.getBoundingClientRect();
 
-      var top = _container$getBoundin.top;
-      var height = _container$getBoundin.height;
+    if (skin != nextSkin || size != nextSize || native != nextNative || set != nextSet || hasStickyPosition != nextHasStickyPosition) {
+      shouldUpdate = true;
+    }
 
-      var _ref = this.parent ? this.parent.getBoundingClientRect() : { top: 0 };
+    return shouldUpdate;
+  }
 
-      var parentTop = _ref.top;
+  memoizeSize() {
+    if (!this.container) {
+      // probably this is a test environment, e.g. jest
+      this.top = 0;
+      this.maxMargin = 0;
+      return;
+    }
+    var parent = this.container.parentElement;
+    var { top, height } = this.container.getBoundingClientRect();
+    var { top: parentTop } = parent.getBoundingClientRect();
+    var { height: labelHeight } = this.label.getBoundingClientRect();
+    var scrollTop = this.parent ? this.parent.scrollTop : 0;
 
-      var _label$getBoundingCli = this.label.getBoundingClientRect();
+    this.top = top - parentTop + parent.scrollTop;
 
-      var labelHeight = _label$getBoundingCli.height;
+    if (height == 0) {
+      this.maxMargin = 0;
+    } else {
+      this.maxMargin = height - labelHeight;
+    }
+  }
 
-      var scrollTop = this.parent ? this.parent.scrollTop : 0;
+  handleScroll(scrollTop) {
+    var margin = scrollTop - this.top;
+    margin = margin < this.minMargin ? this.minMargin : margin;
+    margin = margin > this.maxMargin ? this.maxMargin : margin;
 
-      this.top = top - parentTop + scrollTop;
+    if (margin == this.margin) return;
 
-      if (height == 0) {
-        this.maxMargin = 0;
-      } else {
-        this.maxMargin = height - labelHeight;
+    if (!this.props.hasStickyPosition) {
+      this.label.style.top = `${margin}px`;
+    }
+
+    this.margin = margin;
+    return true;
+  }
+
+  getEmojis() {
+    var { name, emojis, recent, perLine } = this.props;
+
+    if (name == 'Recent') {
+      let { custom } = this.props;
+      let frequentlyUsed = recent || frequently.get(perLine);
+
+      if (frequentlyUsed.length) {
+        emojis = frequentlyUsed.map(id => {
+          const emoji = custom.filter(e => e.id === id)[0];
+          if (emoji) {
+            return emoji;
+          }
+
+          return id;
+        }).filter(id => !!getData(id, null, null, this.data));
+      }
+
+      if (emojis.length === 0 && frequentlyUsed.length > 0) {
+        return null;
       }
     }
-  }, {
-    key: 'handleScroll',
-    value: function handleScroll(scrollTop) {
-      var margin = scrollTop - this.top;
-      margin = margin < this.minMargin ? this.minMargin : margin;
-      margin = margin > this.maxMargin ? this.maxMargin : margin;
 
-      if (margin == this.margin) return;
-
-      if (!this.props.hasStickyPosition) {
-        this.label.style.top = margin + 'px';
-      }
-
-      this.margin = margin;
-      return true;
+    if (emojis) {
+      emojis = emojis.slice(0);
     }
-  }, {
-    key: 'getEmojis',
-    value: function getEmojis() {
-      var _this2 = this;
 
-      var _props2 = this.props;
-      var name = _props2.name;
-      var emojis = _props2.emojis;
-      var recent = _props2.recent;
-      var perLine = _props2.perLine;
+    return emojis;
+  }
 
+  updateDisplay(display) {
+    var emojis = this.getEmojis();
 
-      if (name == 'Recent') {
-        var custom = this.props.custom;
-
-        var frequentlyUsed = recent || _frequently2.default.get(perLine);
-
-        if (frequentlyUsed.length) {
-          emojis = frequentlyUsed.map(function (id) {
-            var emoji = custom.filter(function (e) {
-              return e.id === id;
-            })[0];
-            if (emoji) {
-              return emoji;
-            }
-
-            return id;
-          }).filter(function (id) {
-            return !!(0, _utils.getData)(id, null, null, _this2.data);
-          });
-        }
-
-        if (emojis.length === 0 && frequentlyUsed.length > 0) {
-          return null;
-        }
-      }
-
-      if (emojis) {
-        emojis = emojis.slice(0);
-      }
-
-      return emojis;
+    if (!emojis || !this.container) {
+      return;
     }
-  }, {
-    key: 'updateDisplay',
-    value: function updateDisplay(display) {
-      var emojis = this.getEmojis();
 
-      if (!emojis) {
-        return;
-      }
+    this.container.style.display = display;
+  }
 
-      this.container.style.display = display;
+  setContainerRef(c) {
+    this.container = c;
+  }
+
+  setLabelRef(c) {
+    this.label = c;
+  }
+
+  render() {
+    var {
+      id,
+      name,
+      hasStickyPosition,
+      emojiProps,
+      i18n,
+      notFound,
+      notFoundEmoji
+    } = this.props,
+        emojis = this.getEmojis(),
+        labelStyles = {},
+        labelSpanStyles = {},
+        containerStyles = {};
+
+    if (!emojis) {
+      containerStyles = {
+        display: 'none'
+      };
     }
-  }, {
-    key: 'setContainerRef',
-    value: function setContainerRef(c) {
-      this.container = c;
+
+    if (!hasStickyPosition) {
+      labelStyles = {
+        height: 28
+      };
+
+      labelSpanStyles = {
+        position: 'absolute'
+      };
     }
-  }, {
-    key: 'setLabelRef',
-    value: function setLabelRef(c) {
-      this.label = c;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
 
-      var _props3 = this.props;
-      var id = _props3.id;
-      var name = _props3.name;
-      var hasStickyPosition = _props3.hasStickyPosition;
-      var emojiProps = _props3.emojiProps;
-      var i18n = _props3.i18n;
-      var notFound = _props3.notFound;
-      var notFoundEmoji = _props3.notFoundEmoji;
-      var emojis = this.getEmojis();
-      var labelStyles = {};
-      var labelSpanStyles = {};
-      var containerStyles = {};
+    const label = i18n.categories[id] || name;
 
-      if (!emojis) {
-        containerStyles = {
-          display: 'none'
-        };
-      }
-
-      if (!hasStickyPosition) {
-        labelStyles = {
-          height: 28
-        };
-
-        labelSpanStyles = {
-          position: 'absolute'
-        };
-      }
-
-      return _react2.default.createElement(
+    return React.createElement(
+      'section',
+      {
+        ref: this.setContainerRef,
+        tabIndex: 0,
+        title: name,
+        className: 'emoji-mart-category',
+        'aria-label': label,
+        style: containerStyles
+      },
+      React.createElement(
         'div',
         {
-          ref: this.setContainerRef,
-          tabIndex: 0,
-          title: name,
-          className: 'emoji-mart-category',
-          style: containerStyles
+          style: labelStyles,
+          'data-name': name,
+          className: 'emoji-mart-category-label'
         },
-        _react2.default.createElement(
-          'div',
+        React.createElement(
+          'span',
           {
-            style: labelStyles,
-            'data-name': name,
-            className: 'emoji-mart-category-label'
+            style: labelSpanStyles,
+            ref: this.setLabelRef,
+            'aria-hidden': true /* already labeled by the section aria-label */
           },
-          _react2.default.createElement(
-            'span',
-            { style: labelSpanStyles, ref: this.setLabelRef },
-            i18n.categories[id]
-          )
-        ),
-        emojis && emojis.map(function (emoji) {
-          return (0, _.NimbleEmoji)((0, _extends3.default)({ emoji: emoji, data: _this3.data }, emojiProps));
-        }),
-        emojis && !emojis.length && _react2.default.createElement(_.NotFound, {
-          i18n: i18n,
-          notFound: notFound,
-          notFoundEmoji: notFoundEmoji,
-          data: this.data,
-          emojiProps: emojiProps
-        })
-      );
-    }
-  }]);
-  return Category;
-}(_react2.default.Component);
+          label
+        )
+      ),
+      React.createElement(
+        'ul',
+        { className: 'emoji-mart-category-list' },
+        emojis && emojis.map(emoji => React.createElement(
+          'li',
+          {
+            key: emoji.short_names && emoji.short_names.join('_') || emoji
+          },
+          NimbleEmoji(_extends({ emoji: emoji, data: this.data }, emojiProps))
+        ))
+      ),
+      emojis && !emojis.length && React.createElement(NotFound, {
+        i18n: i18n,
+        notFound: notFound,
+        notFoundEmoji: notFoundEmoji,
+        data: this.data,
+        emojiProps: emojiProps
+      })
+    );
+  }
+}
 
-exports.default = Category;
-
+Category.propTypes /* remove-proptypes */ = {
+  emojis: PropTypes.array,
+  hasStickyPosition: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  native: PropTypes.bool.isRequired,
+  perLine: PropTypes.number.isRequired,
+  emojiProps: PropTypes.object.isRequired,
+  recent: PropTypes.arrayOf(PropTypes.string),
+  notFound: PropTypes.func,
+  notFoundEmoji: PropTypes.string.isRequired
+};
 
 Category.defaultProps = {
   emojis: [],
