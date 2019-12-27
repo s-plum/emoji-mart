@@ -91,5 +91,5 @@ SkinsDot.propTypes /* remove-proptypes */ = {
 };
 
 SkinsDot.defaultProps = {
-  onChange: () => {}
+  onChange: function () {}
 };

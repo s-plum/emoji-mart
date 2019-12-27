@@ -135,7 +135,7 @@ Search.propTypes /* remove-proptypes */ = {
 };
 
 Search.defaultProps = {
-  onSearch: () => {},
+  onSearch: function () {},
   maxResults: 75,
   emojisToShowFilter: null,
   autoFocus: false

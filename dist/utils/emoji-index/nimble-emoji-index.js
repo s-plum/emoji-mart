@@ -32,18 +32,20 @@ class NimbleEmojiIndex {
   }
 
   buildIndex() {
+    var _this = this;
+
     for (let emoji in this.data.emojis) {
       let emojiData = this.data.emojis[emoji],
           { short_names, emoticons, skin_variations } = emojiData,
           id = short_names[0];
 
       if (emoticons) {
-        emoticons.forEach(emoticon => {
-          if (this.emoticons[emoticon]) {
+        emoticons.forEach(function (emoticon) {
+          if (_this.emoticons[emoticon]) {
             return;
           }
 
-          this.emoticons[emoticon] = id;
+          _this.emoticons[emoticon] = id;
         });
       }
 
@@ -62,23 +64,27 @@ class NimbleEmojiIndex {
   }
 
   clearCustomEmojis(pool) {
-    this.customEmojisList.forEach(emoji => {
+    var _this2 = this;
+
+    this.customEmojisList.forEach(function (emoji) {
       let emojiId = emoji.id || emoji.short_names[0];
 
       delete pool[emojiId];
-      delete this.emojis[emojiId];
+      delete _this2.emojis[emojiId];
     });
   }
 
   addCustomToPool(custom, pool) {
+    var _this3 = this;
+
     if (this.customEmojisList.length) this.clearCustomEmojis(pool);
 
-    custom.forEach(emoji => {
+    custom.forEach(function (emoji) {
       let emojiId = emoji.id || emoji.short_names[0];
 
       if (emojiId && !pool[emojiId]) {
-        pool[emojiId] = (0, _.getData)(emoji, null, null, this.data);
-        this.emojis[emojiId] = (0, _.getSanitizedData)(emoji, null, null, this.data);
+        pool[emojiId] = (0, _.getData)(emoji, null, null, _this3.data);
+        _this3.emojis[emojiId] = (0, _.getSanitizedData)(emoji, null, null, _this3.data);
       }
     });
 
@@ -87,6 +93,8 @@ class NimbleEmojiIndex {
   }
 
   search(value, { emojisToShowFilter, maxResults, include, exclude, custom = [] } = {}) {
+    var _this4 = this;
+
     if (this.customEmojisList != custom) this.addCustomToPool(custom, this.originalPool);
 
     const skinTone = _store2.default.get('skin') || 1;
@@ -113,14 +121,16 @@ class NimbleEmojiIndex {
       if (include.length || exclude.length) {
         pool = {};
 
-        this.data.categories.forEach(category => {
+        this.data.categories.forEach(function (category) {
           let isIncluded = include && include.length ? include.indexOf(category.id) > -1 : true;
           let isExcluded = exclude && exclude.length ? exclude.indexOf(category.id) > -1 : false;
           if (!isIncluded || isExcluded) {
             return;
           }
 
-          category.emojis.forEach(emojiId => pool[emojiId] = this.data.emojis[emojiId]);
+          category.emojis.forEach(function (emojiId) {
+            return pool[emojiId] = _this4.data.emojis[emojiId];
+          });
         });
 
         if (custom.length) {
@@ -132,9 +142,9 @@ class NimbleEmojiIndex {
         }
       }
 
-      allResults = values.map(value => {
+      allResults = values.map(function (value) {
         var aPool = pool,
-            aIndex = this.index,
+            aIndex = _this4.index,
             length = 0;
 
         for (let charIndex = 0; charIndex < value.length; charIndex++) {
@@ -160,10 +170,10 @@ class NimbleEmojiIndex {
                 let score = subIndex + 1;
                 if (sub == id) score = 0;
 
-                if (this.emojis[id] && this.emojis[id][skinTone]) {
-                  aIndex.results.push(this.emojis[id][skinTone]);
+                if (_this4.emojis[id] && _this4.emojis[id][skinTone]) {
+                  aIndex.results.push(_this4.emojis[id][skinTone]);
                 } else {
-                  aIndex.results.push(this.emojis[id]);
+                  aIndex.results.push(_this4.emojis[id]);
                 }
                 aIndex.pool[id] = emoji;
 
@@ -171,7 +181,7 @@ class NimbleEmojiIndex {
               }
             }
 
-            aIndex.results.sort((a, b) => {
+            aIndex.results.sort(function (a, b) {
               var aScore = scores[a.id],
                   bScore = scores[b.id];
 
@@ -187,7 +197,9 @@ class NimbleEmojiIndex {
         }
 
         return aIndex.results;
-      }).filter(a => a);
+      }).filter(function (a) {
+        return a;
+      });
 
       if (allResults.length > 1) {
         results = _.intersect.apply(null, allResults);
@@ -200,7 +212,9 @@ class NimbleEmojiIndex {
 
     if (results) {
       if (emojisToShowFilter) {
-        results = results.filter(result => emojisToShowFilter(pool[result.id]));
+        results = results.filter(function (result) {
+          return emojisToShowFilter(pool[result.id]);
+        });
       }
 
       if (results && results.length > maxResults) {

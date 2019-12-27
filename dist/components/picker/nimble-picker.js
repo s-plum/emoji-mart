@@ -88,7 +88,9 @@ const I18N = {
 
 class NimblePicker extends _react2.default.PureComponent {
   constructor(props) {
-    super(props);
+    var _this;
+
+    _this = super(props);
 
     this.CUSTOM = [];
 
@@ -121,7 +123,7 @@ class NimblePicker extends _react2.default.PureComponent {
       const customCategories = {};
       let customCategoriesCreated = 0;
 
-      props.custom.forEach(emoji => {
+      props.custom.forEach(function (emoji) {
         if (!customCategories[emoji.customCategory]) {
           customCategories[emoji.customCategory] = {
             id: emoji.customCategory ? `custom-${emoji.customCategory}` : 'custom',
@@ -142,7 +144,7 @@ class NimblePicker extends _react2.default.PureComponent {
         });
 
         category.emojis.push(customEmoji);
-        this.CUSTOM.push(customEmoji);
+        _this.CUSTOM.push(customEmoji);
       });
 
       allCategories.push(...Object.values(customCategories));
@@ -151,7 +153,7 @@ class NimblePicker extends _react2.default.PureComponent {
     this.hideRecent = true;
 
     if (props.include != undefined) {
-      allCategories.sort((a, b) => {
+      allCategories.sort(function (a, b) {
         if (props.include.indexOf(a.id) > props.include.indexOf(b.id)) {
           return 1;
         }
@@ -237,10 +239,12 @@ class NimblePicker extends _react2.default.PureComponent {
   }
 
   componentDidMount() {
+    var _this2 = this;
+
     if (this.state.firstRender) {
       this.testStickyPosition();
-      this.firstRenderTimeout = setTimeout(() => {
-        this.setState({ firstRender: false });
+      this.firstRenderTimeout = setTimeout(function () {
+        _this2.setState({ firstRender: false });
       }, 60);
     }
   }
@@ -262,7 +266,9 @@ class NimblePicker extends _react2.default.PureComponent {
 
     const prefixes = ['', '-webkit-', '-ms-', '-moz-', '-o-'];
 
-    prefixes.forEach(prefix => stickyTestElement.style.position = `${prefix}sticky`);
+    prefixes.forEach(function (prefix) {
+      return stickyTestElement.style.position = `${prefix}sticky`;
+    });
 
     this.hasStickyPosition = !!stickyTestElement.style.position.length;
   }
@@ -274,7 +280,9 @@ class NimblePicker extends _react2.default.PureComponent {
     }
 
     // Use Array.prototype.find() when it is more widely supported.
-    const emojiData = this.CUSTOM.filter(customEmoji => customEmoji.id === emoji.id)[0];
+    const emojiData = this.CUSTOM.filter(function (customEmoji) {
+      return customEmoji.id === emoji.id;
+    })[0];
     for (let key in emojiData) {
       if (emojiData.hasOwnProperty(key)) {
         emoji[key] = emojiData[key];
@@ -291,7 +299,7 @@ class NimblePicker extends _react2.default.PureComponent {
       return;
     }
 
-    this.leaveTimeout = setTimeout(() => {
+    this.leaveTimeout = setTimeout(function () {
       preview.setState({ emoji: null });
     }, 16);
   }
@@ -302,6 +310,8 @@ class NimblePicker extends _react2.default.PureComponent {
   }
 
   handleEmojiSelect(emoji) {
+    var _this3 = this;
+
     this.props.onSelect(emoji);
     if (!this.hideRecent && !this.props.recent) _frequently2.default.add(emoji);
 
@@ -310,15 +320,15 @@ class NimblePicker extends _react2.default.PureComponent {
       let maxMargin = component.maxMargin;
       component.forceUpdate();
 
-      window.requestAnimationFrame(() => {
-        if (!this.scroll) return;
+      window.requestAnimationFrame(function () {
+        if (!_this3.scroll) return;
         component.memoizeSize();
         if (maxMargin == component.maxMargin) return;
 
-        this.updateCategoriesSize();
-        this.handleScrollPaint();
+        _this3.updateCategoriesSize();
+        _this3.handleScrollPaint();
 
-        if (this.SEARCH_CATEGORY.emojis) {
+        if (_this3.SEARCH_CATEGORY.emojis) {
           component.updateDisplay('none');
         }
       });
@@ -370,7 +380,9 @@ class NimblePicker extends _react2.default.PureComponent {
       }
 
       if (scrollTop < minTop) {
-        activeCategory = this.categories.filter(category => !(category.anchor === false))[0];
+        activeCategory = this.categories.filter(function (category) {
+          return !(category.anchor === false);
+        })[0];
       } else if (scrollTop + this.clientHeight >= this.scrollHeight) {
         activeCategory = this.categories[this.categories.length - 1];
       }
@@ -423,7 +435,7 @@ class NimblePicker extends _react2.default.PureComponent {
       component.container.focus();
     }
 
-    scrollToComponent = () => {
+    scrollToComponent = function () {
       if (component) {
         let { top } = component;
 
@@ -528,6 +540,8 @@ class NimblePicker extends _react2.default.PureComponent {
   }
 
   render() {
+    var _this4 = this;
+
     var {
       perLine,
       emojiSize,
@@ -606,20 +620,20 @@ class NimblePicker extends _react2.default.PureComponent {
           onScroll: this.handleScroll,
           onKeyUp: this.handleKeyUp
         },
-        this.getCategories().map((category, i) => {
+        this.getCategories().map(function (category, i) {
           return _react2.default.createElement(_category2.default, {
-            ref: this.setCategoryRef.bind(this, `category-${i}`),
+            ref: _this4.setCategoryRef.bind(_this4, `category-${i}`),
             key: category.name,
             id: category.id,
             name: category.name,
             emojis: category.emojis,
             perLine: perLine,
             native: native,
-            hasStickyPosition: this.hasStickyPosition,
-            data: this.data,
-            i18n: this.i18n,
-            recent: category.id == this.RECENT_CATEGORY.id ? recent : undefined,
-            custom: category.id == this.RECENT_CATEGORY.id ? this.CUSTOM : undefined,
+            hasStickyPosition: _this4.hasStickyPosition,
+            data: _this4.data,
+            i18n: _this4.i18n,
+            recent: category.id == _this4.RECENT_CATEGORY.id ? recent : undefined,
+            custom: category.id == _this4.RECENT_CATEGORY.id ? _this4.CUSTOM : undefined,
             emojiProps: {
               native: native,
               skin: skin,
@@ -631,9 +645,9 @@ class NimblePicker extends _react2.default.PureComponent {
               forceSize: native,
               tooltip: emojiTooltip,
               backgroundImageFn: backgroundImageFn,
-              onOver: this.handleEmojiOver,
-              onLeave: this.handleEmojiLeave,
-              onClick: this.handleEmojiClick
+              onOver: _this4.handleEmojiOver,
+              onLeave: _this4.handleEmojiLeave,
+              onClick: _this4.handleEmojiClick
             },
             notFound: notFound,
             notFoundEmoji: notFoundEmoji

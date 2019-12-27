@@ -56,7 +56,7 @@ class Preview extends _react2.default.PureComponent {
           knownEmoticons = [],
           listedEmoticons = [];
 
-      emoticons.forEach(emoticon => {
+      emoticons.forEach(function (emoticon) {
         if (knownEmoticons.indexOf(emoticon.toLowerCase()) >= 0) {
           return;
         }
@@ -88,22 +88,26 @@ class Preview extends _react2.default.PureComponent {
           _react2.default.createElement(
             'div',
             { className: 'emoji-mart-preview-shortnames' },
-            emojiData.short_names.map(short_name => _react2.default.createElement(
-              'span',
-              { key: short_name, className: 'emoji-mart-preview-shortname' },
-              ':',
-              short_name,
-              ':'
-            ))
+            emojiData.short_names.map(function (short_name) {
+              return _react2.default.createElement(
+                'span',
+                { key: short_name, className: 'emoji-mart-preview-shortname' },
+                ':',
+                short_name,
+                ':'
+              );
+            })
           ),
           _react2.default.createElement(
             'div',
             { className: 'emoji-mart-preview-emoticons' },
-            listedEmoticons.map(emoticon => _react2.default.createElement(
-              'span',
-              { key: emoticon, className: 'emoji-mart-preview-emoticon' },
-              emoticon
-            ))
+            listedEmoticons.map(function (emoticon) {
+              return _react2.default.createElement(
+                'span',
+                { key: emoticon, className: 'emoji-mart-preview-emoticon' },
+                emoticon
+              );
+            })
           )
         ),
         showSkinTones && _react2.default.createElement(
@@ -177,5 +181,5 @@ Preview.propTypes /* remove-proptypes */ = {
 
 Preview.defaultProps = {
   showSkinTones: true,
-  onChange: () => {}
+  onChange: function () {}
 };

@@ -119,6 +119,8 @@ class Category extends _react2.default.Component {
   }
 
   getEmojis() {
+    var _this = this;
+
     var { name, emojis, recent, perLine } = this.props;
 
     if (name == 'Recent') {
@@ -126,14 +128,18 @@ class Category extends _react2.default.Component {
       let frequentlyUsed = recent || _frequently2.default.get(perLine);
 
       if (frequentlyUsed.length) {
-        emojis = frequentlyUsed.map(id => {
-          const emoji = custom.filter(e => e.id === id)[0];
+        emojis = frequentlyUsed.map(function (id) {
+          const emoji = custom.filter(function (e) {
+            return e.id === id;
+          })[0];
           if (emoji) {
             return emoji;
           }
 
           return id;
-        }).filter(id => !!(0, _utils.getData)(id, null, null, this.data));
+        }).filter(function (id) {
+          return !!(0, _utils.getData)(id, null, null, _this.data);
+        });
       }
 
       if (emojis.length === 0 && frequentlyUsed.length > 0) {
@@ -167,6 +173,8 @@ class Category extends _react2.default.Component {
   }
 
   render() {
+    var _this2 = this;
+
     var {
       id,
       name,
@@ -229,13 +237,15 @@ class Category extends _react2.default.Component {
       _react2.default.createElement(
         'ul',
         { className: 'emoji-mart-category-list' },
-        emojis && emojis.map(emoji => _react2.default.createElement(
-          'li',
-          {
-            key: emoji.short_names && emoji.short_names.join('_') || emoji
-          },
-          (0, _nimbleEmoji2.default)(_extends({ emoji: emoji, data: this.data }, emojiProps))
-        ))
+        emojis && emojis.map(function (emoji) {
+          return _react2.default.createElement(
+            'li',
+            {
+              key: emoji.short_names && emoji.short_names.join('_') || emoji
+            },
+            (0, _nimbleEmoji2.default)(_extends({ emoji: emoji, data: _this2.data }, emojiProps))
+          );
+        })
       ),
       emojis && !emojis.length && _react2.default.createElement(_notFound2.default, {
         i18n: i18n,

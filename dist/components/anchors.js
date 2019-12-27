@@ -18,7 +18,9 @@ class Anchors extends _react2.default.PureComponent {
   constructor(props) {
     super(props);
 
-    let defaultCategory = props.categories.filter(category => category.first)[0];
+    let defaultCategory = props.categories.filter(function (category) {
+      return category.first;
+    })[0];
 
     this.state = {
       selected: defaultCategory.name
@@ -35,22 +37,26 @@ class Anchors extends _react2.default.PureComponent {
   }
 
   handleKeyUp() {
-    return e => {
+    var _this = this;
+
+    return function (e) {
       var code = e.keyCode ? e.keyCode : e.which;
       if (code == 13) {
-        this.handleClick(e);
+        _this.handleClick(e);
       }
     };
   }
 
   render() {
+    var _this2 = this;
+
     var { categories, color, i18n, icons } = this.props,
         { selected } = this.state;
 
     return _react2.default.createElement(
       'nav',
       { className: 'emoji-mart-anchors', 'aria-label': i18n.categorieslabel },
-      categories.map((category, i) => {
+      categories.map(function (category, i) {
         var { id, name, anchor } = category,
             isSelected = name == selected;
 
@@ -68,8 +74,8 @@ class Anchors extends _react2.default.PureComponent {
             'aria-label': i18n.categories[id],
             title: i18n.categories[id],
             'data-index': i,
-            onClick: this.handleClick,
-            onKeyUp: this.handleKeyUp(),
+            onClick: _this2.handleClick,
+            onKeyUp: _this2.handleKeyUp(),
             className: `emoji-mart-anchor ${isSelected ? 'emoji-mart-anchor-selected' : ''}`,
             style: { color: isSelected ? color : null }
           },
@@ -97,6 +103,6 @@ Anchors.propTypes /* remove-proptypes */ = {
 
 Anchors.defaultProps = {
   categories: [],
-  onAnchorClick: () => {},
+  onAnchorClick: function () {},
   icons: {}
 };

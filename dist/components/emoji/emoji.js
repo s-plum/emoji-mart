@@ -24,7 +24,7 @@ var _sharedDefaultProps = require('../../utils/shared-default-props');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const Emoji = props => {
+const Emoji = function (props) {
   for (let k in Emoji.defaultProps) {
     if (props[k] == undefined && Emoji.defaultProps[k] != undefined) {
       props[k] = Emoji.defaultProps[k];

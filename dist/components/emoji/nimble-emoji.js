@@ -24,12 +24,12 @@ var _sharedDefaultProps = require('../../utils/shared-default-props');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const _getData = props => {
+const _getData = function (props) {
   var { emoji, skin, set, data } = props;
   return (0, _utils.getData)(emoji, skin, set, data);
 };
 
-const _getPosition = props => {
+const _getPosition = function (props) {
   var { sheet_x, sheet_y } = _getData(props),
       multiplyX = 100 / (props.sheetColumns - 1),
       multiplyY = 100 / (props.sheetRows - 1);
@@ -37,12 +37,12 @@ const _getPosition = props => {
   return `${multiplyX * sheet_x}% ${multiplyY * sheet_y}%`;
 };
 
-const _getSanitizedData = props => {
+const _getSanitizedData = function (props) {
   var { emoji, skin, set, data } = props;
   return (0, _utils.getSanitizedData)(emoji, skin, set, data);
 };
 
-const _handleClick = (e, props) => {
+const _handleClick = function (e, props) {
   if (!props.onClick) {
     return;
   }
@@ -52,7 +52,7 @@ const _handleClick = (e, props) => {
   onClick(emoji, e);
 };
 
-const _handleOver = (e, props) => {
+const _handleOver = function (e, props) {
   if (!props.onOver) {
     return;
   }
@@ -62,7 +62,7 @@ const _handleOver = (e, props) => {
   onOver(emoji, e);
 };
 
-const _handleLeave = (e, props) => {
+const _handleLeave = function (e, props) {
   if (!props.onLeave) {
     return;
   }
@@ -72,11 +72,11 @@ const _handleLeave = (e, props) => {
   onLeave(emoji, e);
 };
 
-const _isNumeric = value => {
+const _isNumeric = function (value) {
   return !isNaN(value - parseFloat(value));
 };
 
-const _convertStyleToCSS = style => {
+const _convertStyleToCSS = function (style) {
   let div = document.createElement('div');
 
   for (let key in style) {
@@ -92,7 +92,7 @@ const _convertStyleToCSS = style => {
   return div.getAttribute('style');
 };
 
-const NimbleEmoji = props => {
+const NimbleEmoji = function (props) {
   if (props.data.compressed) {
     (0, _data.uncompress)(props.data);
   }
@@ -206,9 +206,15 @@ const NimbleEmoji = props => {
     return _react2.default.createElement(
       Tag.name,
       _extends({
-        onClick: e => _handleClick(e, props),
-        onMouseEnter: e => _handleOver(e, props),
-        onMouseLeave: e => _handleLeave(e, props),
+        onClick: function (e) {
+          return _handleClick(e, props);
+        },
+        onMouseEnter: function (e) {
+          return _handleOver(e, props);
+        },
+        onMouseLeave: function (e) {
+          return _handleLeave(e, props);
+        },
         'aria-label': label,
         title: title,
         className: className

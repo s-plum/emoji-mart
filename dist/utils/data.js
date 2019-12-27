@@ -21,16 +21,16 @@ const mapping = {
   added_in: 'o'
 };
 
-const buildSearch = emoji => {
+const buildSearch = function (emoji) {
   const search = [];
 
-  var addToSearch = (strings, split) => {
+  var addToSearch = function (strings, split) {
     if (!strings) {
       return;
     }
 
-    ;(Array.isArray(strings) ? strings : [strings]).forEach(string => {
-      ;(split ? string.split(/[-|_|\s]+/) : [string]).forEach(s => {
+    ;(Array.isArray(strings) ? strings : [strings]).forEach(function (string) {
+      ;(split ? string.split(/[-|_|\s]+/) : [string]).forEach(function (s) {
         s = s.toLowerCase();
 
         if (search.indexOf(s) == -1) {
@@ -48,8 +48,8 @@ const buildSearch = emoji => {
   return search.join(',');
 };
 
-const compress = emoji => {
-  emoji.short_names = emoji.short_names.filter(short_name => {
+const compress = function (emoji) {
+  emoji.short_names = emoji.short_names.filter(function (short_name) {
     return short_name !== emoji.short_name;
   });
   delete emoji.short_name;
@@ -81,7 +81,7 @@ const compress = emoji => {
   }
 };
 
-const uncompress = data => {
+const uncompress = function (data) {
   data.compressed = false;
 
   for (let id in data.emojis) {

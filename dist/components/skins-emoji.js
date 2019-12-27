@@ -89,6 +89,6 @@ SkinsEmoji.propTypes /* remove-proptypes */ = {
 };
 
 SkinsEmoji.defaultProps = {
-  onChange: () => {},
+  onChange: function () {},
   skinTone: null
 };

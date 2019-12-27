@@ -18,9 +18,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _enzyme.configure)({ adapter: new _enzymeAdapterReact2.default() });
 
-test('click dot to expand the menu', () => {
+test('click dot to expand the menu', function () {
   let currentSkin;
-  const onChange = skin => {
+  const onChange = function (skin) {
     currentSkin = skin;
   };
   const i18n = {

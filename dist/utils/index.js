@@ -18,7 +18,9 @@ const SKINS = ['1F3FA', '1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF'];
 
 function unifiedToNative(unified) {
   var unicodes = unified.split('-'),
-      codePoints = unicodes.map(u => `0x${u}`);
+      codePoints = unicodes.map(function (u) {
+    return `0x${u}`;
+  });
 
   return _stringFromCodePoint2.default.apply(null, codePoints);
 }
@@ -157,7 +159,7 @@ function getEmojiDataFromNative(nativeString, set, data) {
   let skinCode;
   let baseNativeString = nativeString;
 
-  skinTones.forEach((skinTone, skinToneIndex) => {
+  skinTones.forEach(function (skinTone, skinToneIndex) {
     if (nativeString.indexOf(skinTone) > 0) {
       skin = skinToneIndex + 2;
       skinCode = skinCodes[skinToneIndex];
@@ -192,7 +194,7 @@ function getEmojiDataFromNative(nativeString, set, data) {
 }
 
 function uniq(arr) {
-  return arr.reduce((acc, item) => {
+  return arr.reduce(function (acc, item) {
     if (acc.indexOf(item) === -1) {
       acc.push(item);
     }
@@ -204,7 +206,9 @@ function intersect(a, b) {
   const uniqA = uniq(a);
   const uniqB = uniq(b);
 
-  return uniqA.filter(item => uniqB.indexOf(item) >= 0);
+  return uniqA.filter(function (item) {
+    return uniqB.indexOf(item) >= 0;
+  });
 }
 
 function deepMerge(a, b) {
@@ -258,7 +262,7 @@ function throttleIdleTask(func) {
       return;
     }
     running = true;
-    doIdleTask(() => {
+    doIdleTask(function () {
       running = false;
       func();
     });

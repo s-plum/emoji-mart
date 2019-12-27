@@ -48,5 +48,5 @@ Skins.propTypes /* remove-proptypes */ = {
 };
 
 Skins.defaultProps = {
-  onChange: () => {}
+  onChange: function () {}
 };
