@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('../polyfills/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -47,13 +45,13 @@ class SkinsDot extends _skins2.default {
       const visible = opened || selected;
       skinToneNodes.push(_react2.default.createElement(
         'span',
-        (0, _extends3.default)({
+        _extends({
           key: `skin-tone-${skinTone}`,
           className: `emoji-mart-skin-swatch${selected ? ' selected' : ''}`,
           'aria-label': i18n.skintones[skinTone],
           'aria-hidden': !visible
         }, opened ? { role: 'menuitem' } : {}),
-        _react2.default.createElement('span', (0, _extends3.default)({
+        _react2.default.createElement('span', _extends({
           onClick: this.handleClick,
           onKeyDown: this.handleKeyDown,
           role: 'button'

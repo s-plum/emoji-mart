@@ -4,13 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _values = require('babel-runtime/core-js/object/values');
-
-var _values2 = _interopRequireDefault(_values);
-
-var _extends2 = require('../../polyfills/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 require('../../vendor/raf-polyfill');
 
@@ -141,7 +135,7 @@ class NimblePicker extends _react2.default.PureComponent {
 
         const category = customCategories[emoji.customCategory];
 
-        const customEmoji = (0, _extends3.default)({}, emoji, {
+        const customEmoji = _extends({}, emoji, {
           // `<Category />` expects emoji to have an `id`.
           id: emoji.short_names[0],
           custom: true
@@ -151,7 +145,7 @@ class NimblePicker extends _react2.default.PureComponent {
         this.CUSTOM.push(customEmoji);
       });
 
-      allCategories.push(...(0, _values2.default)(customCategories));
+      allCategories.push(...Object.values(customCategories));
     }
 
     this.hideRecent = true;
@@ -231,11 +225,11 @@ class NimblePicker extends _react2.default.PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     if (props.skin) {
-      return (0, _extends3.default)({}, state, {
+      return _extends({}, state, {
         skin: props.skin
       });
     } else if (props.defaultSkin && !_store2.default.get('skin')) {
-      return (0, _extends3.default)({}, state, {
+      return _extends({}, state, {
         skin: props.defaultSkin
       });
     }
@@ -566,7 +560,7 @@ class NimblePicker extends _react2.default.PureComponent {
     return _react2.default.createElement(
       'section',
       {
-        style: (0, _extends3.default)({ width: width }, style),
+        style: _extends({ width: width }, style),
         className: `emoji-mart ${darkMode ? 'emoji-mart-dark' : ''}`,
         'aria-label': title,
         onKeyDown: this.handleKeyDown
@@ -683,7 +677,7 @@ class NimblePicker extends _react2.default.PureComponent {
 }
 
 exports.default = NimblePicker;
-NimblePicker.propTypes /* remove-proptypes */ = (0, _extends3.default)({}, _sharedProps.PickerPropTypes, {
+NimblePicker.propTypes /* remove-proptypes */ = _extends({}, _sharedProps.PickerPropTypes, {
   data: _propTypes2.default.object.isRequired
 });
-NimblePicker.defaultProps = (0, _extends3.default)({}, _sharedDefaultProps.PickerDefaultProps);
+NimblePicker.defaultProps = _extends({}, _sharedDefaultProps.PickerDefaultProps);

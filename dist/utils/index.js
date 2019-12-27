@@ -5,14 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.throttleIdleTask = exports.measureScrollbar = exports.unifiedToNative = exports.deepMerge = exports.intersect = exports.uniq = exports.getSanitizedData = exports.getEmojiDataFromNative = exports.getData = undefined;
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _keys = require('../polyfills/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
 var _data = require('./data');
 
 var _stringFromCodePoint = require('../polyfills/stringFromCodePoint');
@@ -113,7 +105,7 @@ function getData(emoji, skin, set, data) {
     }
   }
 
-  if (!(0, _keys2.default)(emojiData).length) {
+  if (!Object.keys(emojiData).length) {
     emojiData = emoji;
     emojiData.custom = true;
 
@@ -126,7 +118,7 @@ function getData(emoji, skin, set, data) {
   emojiData.variations || (emojiData.variations = []);
 
   if (emojiData.skin_variations && skin > 1) {
-    emojiData = JSON.parse((0, _stringify2.default)(emojiData));
+    emojiData = JSON.parse(JSON.stringify(emojiData));
 
     var skinKey = SKINS[skin - 1],
         variationData = emojiData.skin_variations[skinKey];
@@ -146,7 +138,7 @@ function getData(emoji, skin, set, data) {
   }
 
   if (emojiData.variations && emojiData.variations.length) {
-    emojiData = JSON.parse((0, _stringify2.default)(emojiData));
+    emojiData = JSON.parse(JSON.stringify(emojiData));
     emojiData.unified = emojiData.variations.shift();
   }
 

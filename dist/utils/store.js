@@ -3,13 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var NAMESPACE = 'emoji-mart';
 
 var isLocalStorageSupported = typeof window !== 'undefined' && 'localStorage' in window;
@@ -41,7 +34,7 @@ function set(key, value) {
   } else {
     if (!isLocalStorageSupported) return;
     try {
-      window.localStorage[`${NAMESPACE}.${key}`] = (0, _stringify2.default)(value);
+      window.localStorage[`${NAMESPACE}.${key}`] = JSON.stringify(value);
     } catch (e) {}
   }
 }

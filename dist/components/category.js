@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('../polyfills/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -236,7 +234,7 @@ class Category extends _react2.default.Component {
           {
             key: emoji.short_names && emoji.short_names.join('_') || emoji
           },
-          (0, _nimbleEmoji2.default)((0, _extends3.default)({ emoji: emoji, data: this.data }, emojiProps))
+          (0, _nimbleEmoji2.default)(_extends({ emoji: emoji, data: this.data }, emojiProps))
         ))
       ),
       emojis && !emojis.length && _react2.default.createElement(_notFound2.default, {

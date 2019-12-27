@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('../polyfills/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -73,7 +71,7 @@ class Preview extends _react2.default.PureComponent {
         _react2.default.createElement(
           'div',
           { className: 'emoji-mart-preview-emoji', 'aria-hidden': 'true' },
-          (0, _nimbleEmoji2.default)((0, _extends3.default)({
+          (0, _nimbleEmoji2.default)(_extends({
             key: emoji.id,
             emoji: emoji,
             data: this.data
@@ -134,7 +132,7 @@ class Preview extends _react2.default.PureComponent {
         _react2.default.createElement(
           'div',
           { className: 'emoji-mart-preview-emoji', 'aria-hidden': 'true' },
-          idleEmoji && idleEmoji.length && (0, _nimbleEmoji2.default)((0, _extends3.default)({ emoji: idleEmoji, data: this.data }, emojiProps))
+          idleEmoji && idleEmoji.length && (0, _nimbleEmoji2.default)(_extends({ emoji: idleEmoji, data: this.data }, emojiProps))
         ),
         _react2.default.createElement(
           'div',

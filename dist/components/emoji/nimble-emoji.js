@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('../../polyfills/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -162,13 +160,13 @@ const NimbleEmoji = props => {
       display: 'inline-block'
     };
     if (data.spriteUrl) {
-      style = (0, _extends3.default)({}, style, {
+      style = _extends({}, style, {
         backgroundImage: `url(${data.spriteUrl})`,
         backgroundSize: `${100 * props.sheetColumns}% ${100 * props.sheetRows}%`,
         backgroundPosition: _getPosition(props)
       });
     } else {
-      style = (0, _extends3.default)({}, style, {
+      style = _extends({}, style, {
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -214,7 +212,7 @@ const NimbleEmoji = props => {
   } else {
     return _react2.default.createElement(
       Tag.name,
-      (0, _extends3.default)({
+      _extends({
         onClick: e => _handleClick(e, props),
         onKeyDown: e => _handleKeyDown(e, props),
         onMouseEnter: e => _handleOver(e, props),
@@ -232,7 +230,7 @@ const NimbleEmoji = props => {
   }
 };
 
-NimbleEmoji.propTypes /* remove-proptypes */ = (0, _extends3.default)({}, _sharedProps.EmojiPropTypes, {
+NimbleEmoji.propTypes /* remove-proptypes */ = _extends({}, _sharedProps.EmojiPropTypes, {
   data: _propTypes2.default.object.isRequired
 });
 NimbleEmoji.defaultProps = _sharedDefaultProps.EmojiDefaultProps;
