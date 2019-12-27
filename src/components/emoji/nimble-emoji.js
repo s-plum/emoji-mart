@@ -34,13 +34,6 @@ const _handleClick = (e, props) => {
   onClick(emoji, e)
 }
 
-const _handleKeyDown = (e, props) => {
-    var code = (e.keyCode ? e.keyCode : e.which)
-    if(code == 13) {
-        _handleClick(e, props)
-    }
-}
-
 const _handleOver = (e, props) => {
   if (!props.onOver) {
     return
@@ -207,7 +200,6 @@ const NimbleEmoji = (props) => {
     return (
       <Tag.name
         onClick={(e) => _handleClick(e, props)}
-        onKeyDown={(e) => _handleKeyDown(e, props)}
         onMouseEnter={(e) => _handleOver(e, props)}
         onMouseLeave={(e) => _handleLeave(e, props)}
         aria-label={label}
